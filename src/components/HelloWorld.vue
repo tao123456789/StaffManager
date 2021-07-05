@@ -1,7 +1,8 @@
 <template>
-  <div>
+  <div id="hello">
     <div>
-      <p style="">HelloWorld</p>
+      <p style="">HelloWorld!</p>
+      <h2>this.$store</h2>
       <el-button @click="test()">getToken</el-button>
       <el-button @click="test2()">test接口触发</el-button>
     </div>
@@ -9,9 +10,6 @@
 </template>
 
 <script>
-import {testGet} from '../api/testApi'
-import axios from "axios";
-
 export default {
   name: 'HelloWorld',
   data() {
@@ -25,11 +23,17 @@ export default {
   },
   methods: {
     test(){
+      let that=this;
       this.$axios.post('http://localhost:8087/user/getToken',{'UserDo1':'UserDo'},{headers:{'Content-Type':'application/json;charset=UTF-8'}})
+        .then(
+          function (res){
+            console.log('成功获取到token：'+res.data)
+            that.$store.commit('setToken',res.data)
+          })
       },
     test2(){
       this.$axios.get('http://localhost:8087/user/getMessage',{headers:{
-        token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxMjMifQ.aGFldwhacqQqHt4w6ZvOXvLnWt-RvrteKTLNTleUWcQ',
+          token:this.$store.state.Token.token,
         }})
     }
   }
