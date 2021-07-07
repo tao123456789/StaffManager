@@ -5,8 +5,8 @@
         <div class="title">
           <p>管理员登录</p>
         </div>
-        <el-input v-model="UserName" clearable placeholder="用户名"></el-input>
-        <el-input v-model="PassWord" clearable show-password placeholder="密码"></el-input>
+        <el-input v-model="user.userName" clearable placeholder="用户名"></el-input>
+        <el-input v-model="user.userPasswd" clearable show-password placeholder="密码"></el-input>
         <div class="content_button">
           <el-button type="primary" @click="SignIn">登录</el-button>
         </div>
@@ -16,21 +16,24 @@
 </template>
 
 <script>
-import {testGet} from '../api/testApi'
 
 export default {
   name: 'Login',
   data() {
     return {
-      UserName: '',
-      PassWord: ''
+      user:{
+        'id':'1',
+        'userName': '请输入账号',
+        'userPasswd': '请输入密码',
+        'RealName'  :'yt',
+      },
     }
   },
   methods: {
     SignIn() {
-      let that = this;
-      let username = that.UserName;
-      let password = that.PassWord;
+      let username = this.user.userName;
+      let password = this.user.userPasswd;
+      let that=this;
       if (username!=="123") {
         this.$notify.error({
           title: '错误',
@@ -44,13 +47,27 @@ export default {
         });
         return;
       } else {
+        try{
+          this.$axios.post('http://localhost:8087/getToken',JSON.stringify(this.user),{
+            headers:{
+              'Content-Type':'application/json'
+            }}).then(
+              function (res){
+                that.$store.state.Token.token=res.data
+                that.$message({
+                  message: '恭喜你，通过了！',
+                  type: 'success'
+                });
+                that.$router.push("/HelloWorld")
+              },
+            function (err){
+                console.log("登录失败："+err.message)
+            }
+          )
+        }catch (e) {
+          console.log("推送失败："+e)
+        }
 
-        this.$message({
-          message: '恭喜你，通过了！',
-          type: 'success'
-        });
-
-        this.$router.push("/HelloWorld")
         setTimeout(() => {
           this.$notify({
             title: '没得办法就这一页',

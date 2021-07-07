@@ -24,7 +24,7 @@ export default {
   methods: {
     test(){
       let that=this;
-      this.$axios.post('http://localhost:8087/user/getToken',{'UserDo1':'UserDo'},{headers:{'Content-Type':'application/json;charset=UTF-8'}})
+      this.$axios.post('http://localhost:8087/getToken',{'UserDo1':'UserDo'},{headers:{'Content-Type':'application/json;charset=UTF-8'}})
         .then(
           function (res){
             console.log('成功获取到token：'+res.data)
@@ -32,7 +32,7 @@ export default {
           })
       },
     test2(){
-      this.$axios.get('http://localhost:8087/user/getMessage',{headers:{
+      this.$axios.get('http://localhost:8087/getMessage',{headers:{
           token:this.$store.state.Token.token,
         }})
     }
