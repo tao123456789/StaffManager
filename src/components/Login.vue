@@ -34,13 +34,13 @@ export default {
       let username = this.user.userName;
       let password = this.user.userPasswd;
       let that=this;
-      if (username!=="123") {
+      if (username==null) {
         this.$notify.error({
           title: '错误',
           message: '用户名不能为空'
         });
         return;
-      } else if (password!=="123") {
+      } else if (password==null) {
         this.$notify.error({
           title: '错误',
           message: '密码不能为空'
@@ -53,12 +53,20 @@ export default {
               'Content-Type':'application/json'
             }}).then(
               function (res){
-                that.$store.state.Token.token=res.data
-                that.$message({
-                  message: '恭喜你，通过了！',
-                  type: 'success'
-                });
-                that.$router.push("/HelloWorld")
+                if(res.data=="") {
+                  that.$message({
+                    message:'获取token失败！！！    请检查账号和密码是否有误！！！',
+                    type:'error'
+                  })
+                } else{
+                  console.log(res.data)
+                  that.$store.state.Token.token = res.data
+                  that.$message({
+                    message: '恭喜你，通过了！',
+                    type: 'success'
+                  });
+                  that.$router.push("/HelloWorld")
+                }
               },
             function (err){
                 console.log("登录失败："+err.message)

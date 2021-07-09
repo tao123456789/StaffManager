@@ -6,7 +6,7 @@ Vue.use(Vuex)
 export const store = new Vuex.Store({
   state:{//设置属性，用来存储数据
     Token: {
-      token:'storetoken:123'
+      token:''
     }
   },
   getter:{//对应方法，用来获取属性的状态
@@ -14,8 +14,8 @@ export const store = new Vuex.Store({
   },
   mutations:{//更改属性的状态，相当于set方法
     setToken(state,token){
-      console.log('mutation中的state:  '+state.toString());
-      console.log('mutation中的token：'+token)
+      // console.log('mutation中的state:  '+state.toString());
+      // console.log('mutation中的token：'+token)
       state.Token.token=token
     }
   },

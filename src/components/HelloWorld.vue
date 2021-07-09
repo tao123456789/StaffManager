@@ -1,10 +1,13 @@
 <template>
-  <div id="hello">
-    <div>
+  <div id="hello" class="content">
+    <div class="content_input">
       <p style="">HelloWorld!</p>
-      <h2>this.$store</h2>
-      <el-button @click="test()">getToken</el-button>
+      <el-button @click="showToken=!showToken">显示token</el-button>
       <el-button @click="test2()">test接口触发</el-button>
+
+      <div v-show="showToken">
+      <h4>{{this.$store.state.Token.token}}</h4>
+      </div>
     </div>
   </div>
 </template>
@@ -18,23 +21,27 @@ export default {
         id:'123',
         userName: 'yt',
         userPasswd: '123'
-        }
+        },
+      showToken:false,
     }
   },
   methods: {
     test(){
-      let that=this;
-      this.$axios.post('http://localhost:8087/getToken',{'UserDo1':'UserDo'},{headers:{'Content-Type':'application/json;charset=UTF-8'}})
-        .then(
-          function (res){
-            console.log('成功获取到token：'+res.data)
-            that.$store.commit('setToken',res.data)
-          })
+      data.showToken=true
       },
     test2(){
       this.$axios.get('http://localhost:8087/getMessage',{headers:{
           token:this.$store.state.Token.token,
         }})
+    }
+  },
+  beforeMount() {
+    if(this.$store.state.Token.token==""){
+      this.$message({
+        message:'token失效，请重新登录！！！',
+        type:'error'
+      })
+      this.$router.push("/")
     }
   }
 }
