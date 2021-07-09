@@ -22,10 +22,10 @@ export default {
   data() {
     return {
       user:{
-        'id':'1',
+        // 'id':'',
         'userName': '请输入账号',
         'userPasswd': '请输入密码',
-        'RealName'  :'yt',
+        // 'RealName'  :'',
       },
     }
   },
@@ -76,13 +76,14 @@ export default {
           console.log("推送失败："+e)
         }
 
-        setTimeout(() => {
-          this.$notify({
-            title: '没得办法就这一页',
-            message: '自己点 “X” 吧！',
-            position: 'top-left'
-          });
-        }, 2000)
+        // 前端定时任务
+        // setTimeout(() => {
+        //   this.$notify({
+        //     title: '没得办法就这一页',
+        //     message: '自己点 “X” 吧！',
+        //     position: 'top-left'
+        //   });
+        // }, 2000)
       }
     }
   }
