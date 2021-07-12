@@ -23,8 +23,8 @@ export default {
     return {
       user:{
         // 'id':'',
-        'userName': '请输入账号',
-        'userPasswd': '请输入密码',
+        'userName': 'root',
+        'userPasswd': '123456',
         // 'RealName'  :'',
       },
     }
@@ -65,7 +65,7 @@ export default {
                     message: '恭喜你，通过了！',
                     type: 'success'
                   });
-                  that.$router.push("/HelloWorld")
+                  that.$router.push("/homepage")
                 }
               },
             function (err){
