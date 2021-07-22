@@ -3,7 +3,6 @@
     <div>
       <el-button @click="showToken=!showToken">显示token</el-button>
       <el-button @click="test2()">test接口触发</el-button>
-
       <div v-show="showToken" >
         <h4>{{this.$store.state.Token.token}}</h4>
       </div>
