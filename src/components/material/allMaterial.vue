@@ -11,7 +11,6 @@
     <el-table-column label="型号" prop="material_type"></el-table-column>
     <el-table-column label="价格" prop="material_price"></el-table-column>
     <el-table-column label="供应商" prop="material_gys"></el-table-column>
-    <el-table-column label="供应商名称" prop="gys_name"></el-table-column>
     <el-table-column label="负责人" prop="gys_name"></el-table-column>
     <el-table-column label="电话" prop="gys_name_tel"></el-table-column>
     <el-table-column label="备注" prop="remark"></el-table-column>
@@ -52,8 +51,9 @@ export default {
         // this.materialListTemp=this.selectedList
 
         //使用filter查询
-        this.materialListTemp=this.materialList.filter((item)=> item.material_id.indexOf(that.info)!==-1)
-
+        this.materialListTemp=this.materialList.filter((item)=>item.material_id.indexOf(that.info)!==-1||
+          ((item.material_name.indexOf(that.info)!==-1)||
+            (item.material_gys.indexOf(that.info)!==-1)||item.gys_name.indexOf(that.info)!==-1))
       }
     },
     reset(){
