@@ -1,5 +1,5 @@
 <template>
-<div id="index">
+<div id="homepage">
 <el-container>
 <!--  顶栏-->
   <el-header height="70px">
@@ -14,20 +14,27 @@
     <el-aside width="200px">
       <el-row>
         <el-col>
-          <button style="width: 100%"  @click="showMaterial(aside[0])">{{aside[0]}}</button>
-          <button style="width: 100%"  @click="showMaterial(aside[1])">{{aside[1]}}</button>
-          <button style="width: 100%"  @click="showMaterial(aside[2])">{{aside[2]}}</button>
+          <button style="width: 100%; height: 30px"  @click="showMaterial(tag[0])">{{tag[0]}}</button>
+          <button style="width: 100%; height: 30px"  @click="showMaterial(tag[1])">{{tag[1]}}</button>
+          <button style="width: 100%; height: 30px"   @click="showMaterial(tag[2])">{{tag[2]}}</button>
         </el-col>
       </el-row>
     </el-aside>
 
 <!--    内容-->
     <el-main>
-      <el-header height="20px"><button ref="button" v-for="(item,i) in ButtonCount" style="width: 50px;height: 20px" @click="test(i)">{{ButtonCount[i]}}</button></el-header>
-      <el-row>
-        <el-table></el-table>
-      </el-row>
+      <el-header height="auto"  style="background-color: #FFFFFF;">
+        <el-tag ref="button" v-for="(item,i) in ButtonCount" style="width: 90px;height: 25px" v-bind:key="item.i">
+          <span>
+          <p style="height:15px;width:60px;text-align:center;display:inline-block" @click="test2(i)">{{ButtonCount[i]}}</p><img alt="" src="../../../static/common/tips.png" height="10px" width="20" @click="test(i)"/>
+          </span>
+        </el-tag>
+      </el-header>
+      <el-main>
+        <router-view/>
+      </el-main>
     </el-main>
+
   </el-container>
 </el-container>
 
@@ -39,19 +46,27 @@
 </template>
 
 <script>
+
 export default {
-  name: "index",
+  name: "homepage",
   data(){
     return{
-      aside:["全部物料","添加物料","人员管理"],
+      tag:["全部物料","添加物料","人员管理"],
       ButtonCount:[
       ],
       checkedKeys : []
     }
   },
+  components:{
+  },
   methods: {
     test(i) {
-      this.$message.success('点击了' + this.ButtonCount[i])
+      this.$message.success('关闭'+this.ButtonCount[i])
+      this.ButtonCount.splice(i,1)
+      this.$router.push('/homepage')
+    },
+    test2(i) {
+      this.$message.success('打开'+this.ButtonCount[i])
     },
     showMaterial(name) {
       var exit=false
@@ -65,6 +80,7 @@ export default {
       if(exit===false) {
         this.ButtonCount.push(name)
       }
+      this.$router.push('/allMaterial')
     }
   }
 }
