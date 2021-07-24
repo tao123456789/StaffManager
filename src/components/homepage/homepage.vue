@@ -5,6 +5,7 @@
   <el-header height="70px">
     <el-container direction="horizontal">
         <h1 style="font-size: 35px">后台管理系统</h1>
+      <p @click="quit()" style="margin-right: 10px;float:right">退出</p>
     </el-container>
   </el-header>
 
@@ -15,8 +16,7 @@
       <el-row>
         <el-col>
           <button style="width: 100%; height: 30px"  @click="showMaterial(tag[0])">{{tag[0]}}</button>
-          <button style="width: 100%; height: 30px"  @click="showMaterial(tag[1])">{{tag[1]}}</button>
-          <button style="width: 100%; height: 30px"   @click="showMaterial(tag[2])">{{tag[2]}}</button>
+          <button style="width: 100%; height: 30px"  @click="showUser(tag[1])">{{tag[1]}}</button>
         </el-col>
       </el-row>
     </el-aside>
@@ -31,7 +31,7 @@
         </el-tag>
       </el-header>
       <el-main>
-        <router-view/>
+        <router-view v-if="show"/>
       </el-main>
     </el-main>
 
@@ -51,9 +51,9 @@ export default {
   name: "homepage",
   data(){
     return{
-      tag:["全部物料","添加物料","人员管理"],
-      ButtonCount:[
-      ],
+      show:false,
+      tag:["全部物料","人员管理"],
+      ButtonCount:[],
       checkedKeys : []
     }
   },
@@ -61,13 +61,20 @@ export default {
   },
   methods: {
     test(i) {
-      this.$message.success('关闭'+this.ButtonCount[i])
+      this.$message.success(this.ButtonCount[i])
       this.ButtonCount.splice(i,1)
-      this.$router.push('/homepage')
+      this.show=false
+      this.$router.go(-1)
+      this.show=true
     },
     test2(i) {
-      this.$message.success('打开'+this.ButtonCount[i])
+      this.$message.success(this.ButtonCount[i])
     },
+    quit(){
+      this.$router.push('/')
+    },
+
+    //查询物料
     showMaterial(name) {
       var exit=false
       var i
@@ -80,7 +87,32 @@ export default {
       if(exit===false) {
         this.ButtonCount.push(name)
       }
-      this.$router.push('/allMaterial')
+      if(this.$route.path==="/allMaterial") {
+        this.$message.success("页面已开启！！！")
+      }else{
+        this.show=true
+        this.$router.push('/allMaterial')
+      }
+    },
+    //查询用户
+    showUser(name){
+      var exit=false
+      var i
+      for(i=0;i<this.ButtonCount.length+1;i++){
+        if(name===this.ButtonCount[i]){
+          exit=true
+          break
+        }
+      }
+      if(exit===false) {
+        this.ButtonCount.push(name)
+      }
+      if(this.$route.path==="/allUser"){
+        this.$message.success("页面已开启！！！")
+      }else {
+        this.show=true
+        this.$router.push('/allUser')
+      }
     }
   }
 }

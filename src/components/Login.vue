@@ -59,10 +59,9 @@ export default {
                     type:'error'
                   })
                 } else{
-                  console.log(res.data)
                   that.$store.state.Token.token = res.data
                   that.$message({
-                    message: '恭喜你，通过了！',
+                    message: '欢迎',
                     type: 'success'
                   });
                   that.$router.push("/homepage")
