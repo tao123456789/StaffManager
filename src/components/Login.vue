@@ -39,40 +39,35 @@ export default {
           title: '错误',
           message: '用户名不能为空'
         });
-        return;
       } else if (password==null) {
         this.$notify.error({
           title: '错误',
           message: '密码不能为空'
         });
-        return;
       } else {
-        try{
-          this.$axios.post('http://localhost:8087/getToken',JSON.stringify(this.user),{
+          this.$axios.post('/api/getToken',JSON.stringify(this.user),{
             headers:{
               'Content-Type':'application/json'
-            }}).then(
-              function (res){
-                if(res.data=="") {
-                  that.$message({
-                    message:'获取token失败！！！    请检查账号和密码是否有误！！！',
-                    type:'error'
+            }}).then(response=>{
+                  this.$store.state.Token.token = response.data
+                  this.$axios.get('/api/user/getUser/'+username).then(response=>{
+                    console.log(response.data)
+                    this.$store.state.Token.userID=response.data.id
+                    console.log(this.$store.state.Token.userID)
                   })
-                } else{
-                  that.$store.state.Token.token = res.data
-                  that.$message({
+                  this.$message({
                     message: '欢迎',
                     type: 'success'
                   });
-                  that.$router.push("/homepage")
-                }
+                  this.$router.push("/homepage")
               },
-            function (err){
-                console.log("登录失败："+err.message)
+            error=>{
+              this.$message({
+                message:error,
+                type:'error'
+              })
             }
           )
-        }catch (e) {
-          console.log("推送失败："+e)
         }
 
         // 前端定时任务
@@ -83,7 +78,6 @@ export default {
         //     position: 'top-left'
         //   });
         // }, 2000)
-      }
     }
   }
 }

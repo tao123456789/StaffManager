@@ -4,6 +4,7 @@ import Login from '../components/Login'
 import homepage from "../components/homepage/homepage";
 import allMaterial from '../components/material/allMaterial'
 import allUser from "../components/user/allUser";
+import test from "../components/test"
 
 Vue.use(Router)
 
@@ -27,6 +28,11 @@ export default new Router({
           path: '/allUser',
           name: 'allUser',
           component: allUser
+        },
+        {
+          path: '/test',
+          name: 'test',
+          component: test
         },
       ]
     },

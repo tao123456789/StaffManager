@@ -18,8 +18,8 @@ export default {
       userList:[],
     }
   },
-  beforeCreate() {
-    this.$axios.get('http://localhost:8087/user/getAllUser',{
+  beforeMount() {
+    this.$axios.get('/api/user/getAllUser',{
       headers:{
         'Content-Type':'application/json',
         'token':this.$store.state.Token.token

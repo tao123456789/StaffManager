@@ -62,7 +62,7 @@ export default {
     }
   },
   beforeCreate() {
-    this.$axios.get('http://localhost:8087/material/getAllMaterial',{
+    this.$axios.get('/api/material/getAllMaterial',{
       headers:{
         'Content-Type':'application/json',
         'token':this.$store.state.Token.token

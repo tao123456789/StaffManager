@@ -15,21 +15,16 @@
     <el-aside width="200px">
       <el-row>
         <el-col>
-          <button style="width: 100%; height: 30px"  @click="showMaterial(tag[0])">{{tag[0]}}</button>
-          <button style="width: 100%; height: 30px"  @click="showUser(tag[1])">{{tag[1]}}</button>
+          <button v-for="(item,i) in menu" style="width: 100%; height: 30px"  @click="handleClick(item.action_url,item.action_name)">{{item.action_name}}</button>
         </el-col>
       </el-row>
     </el-aside>
 
 <!--    内容-->
     <el-main>
-      <el-header height="auto"  style="background-color: #FFFFFF;">
-        <el-tag ref="button" v-for="(item,i) in ButtonCount" style="width: 90px;height: 25px" v-bind:key="item.i">
-          <span>
-          <p style="height:15px;width:60px;text-align:center;display:inline-block" @click="test2(i)">{{ButtonCount[i]}}</p><img alt="" src="../../../static/common/tips.png" height="10px" width="20" @click="test(i)"/>
-          </span>
+        <el-tag v-for="(item,i) in ButtonCount" closable :disable-transitions="false"  v-bind:key="item" @close="handleClose(i)">
+          {{item}}
         </el-tag>
-      </el-header>
       <el-main>
         <router-view v-if="show"/>
       </el-main>
@@ -51,8 +46,9 @@ export default {
   name: "homepage",
   data(){
     return{
+      functions:'',
       show:false,
-      tag:["全部物料","人员管理"],
+      menu:[],
       ButtonCount:[],
       checkedKeys : []
     }
@@ -60,13 +56,6 @@ export default {
   components:{
   },
   methods: {
-    test(i) {
-      this.$message.success(this.ButtonCount[i])
-      this.ButtonCount.splice(i,1)
-      this.show=false
-      this.$router.go(-1)
-      this.show=true
-    },
     test2(i) {
       this.$message.success(this.ButtonCount[i])
     },
@@ -74,46 +63,60 @@ export default {
       this.$router.push('/')
     },
 
-    //查询物料
-    showMaterial(name) {
+    //统一处理menu的按钮事件
+    handleClick(url,name){
       var exit=false
       var i
+
       for(i=0;i<this.ButtonCount.length+1;i++){
         if(name===this.ButtonCount[i]){
           exit=true
           break
         }
       }
+
       if(exit===false) {
         this.ButtonCount.push(name)
       }
-      if(this.$route.path==="/allMaterial") {
+
+      if(this.$route.path===url) {
         this.$message.success("页面已开启！！！")
       }else{
         this.show=true
-        this.$router.push('/allMaterial')
+        this.$router.push(url)
       }
     },
-    //查询用户
-    showUser(name){
-      var exit=false
-      var i
-      for(i=0;i<this.ButtonCount.length+1;i++){
-        if(name===this.ButtonCount[i]){
-          exit=true
-          break
-        }
-      }
-      if(exit===false) {
-        this.ButtonCount.push(name)
-      }
-      if(this.$route.path==="/allUser"){
-        this.$message.success("页面已开启！！！")
+
+    //tag标签关闭
+    handleClose(i){
+      if(this.ButtonCount.length===1){
+        this.ButtonCount.splice(i, 1)
+        this.$router.push('/homepage')
+        this.show = false
       }else {
-        this.show=true
-        this.$router.push('/allUser')
+        this.ButtonCount.splice(i, 1)
+        this.show = false
+        this.$router.go(-1)
+        this.show = true
       }
-    }
+    },
+  },
+  beforeMount(){
+    let userID=this.$store.state.Token.userID
+    console.log("全局参数的userid"+this.$store.state.Token.userID)
+    console.log("全局参数的token"+this.$store.state.Token.token)
+    this.$axios.get('/api/menu/getMenu/'+userID,{
+      headers:{
+        'Content-Type':'application/json',
+        'token':this.$store.state.Token.token
+      }
+    }).then(response=>{
+      console.log("获取用户的菜单"+response.data)
+      this.menu=response.data.actionArr
+      console.log("获取赋值"+this.menu)
+    },error=>{
+      this.$message.error(error)
+    })
   }
 }
 </script>
