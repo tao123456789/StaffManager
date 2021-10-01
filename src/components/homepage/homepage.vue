@@ -15,7 +15,7 @@
     <el-aside width="200px">
       <el-row>
         <el-col>
-          <button v-for="(item,i) in menu" style="width: 100%; height: 30px"  @click="handleClick(item.action_url,item.action_name)">{{item.action_name}}</button>
+          <button type="primary" v-for="(item,i) in menu" style="width: 100%; height: 30px"  @click="handleClick(item.action_url,item.action_name)">{{item.action_name}}</button>
         </el-col>
       </el-row>
     </el-aside>
