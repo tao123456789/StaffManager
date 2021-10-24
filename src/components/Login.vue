@@ -16,7 +16,7 @@
 </template>
 
 <script>
-
+import * as sysTool from '../assets/systemTool';
 export default {
   name: 'Login',
   data() {
@@ -27,40 +27,59 @@ export default {
         'userPasswd': '123456',
         // 'RealName'  :'',
       },
+      getUseInfo:{
+        'ip': '',
+        'area': '北京市',
+        'brower': 'chrome',
+        'os': 'windows7'
+      },
     }
   },
   methods: {
     SignIn() {
-      let username = this.user.userName;
-      let password = this.user.userPasswd;
-      let that=this;
-      if (username==null) {
+      let user = this.user;
+      if (user.username) {
         this.$notify.error({
           title: '错误',
           message: '用户名不能为空'
         });
-      } else if (password==null) {
+      } else if (user.password) {
         this.$notify.error({
           title: '错误',
           message: '密码不能为空'
         });
       } else {
+        //登录获取token
           this.$axios.post('/api/getToken',JSON.stringify(this.user),{
             headers:{
               'Content-Type':'application/json'
             }}).then(response=>{
-                  this.$store.state.Token.token = response.data
-                  this.$axios.get('/api/user/getUser/'+username).then(response=>{
-                    console.log(response.data)
-                    this.$store.state.Token.userID=response.data.id
-                    console.log(this.$store.state.Token.userID)
-                  })
-                  this.$message({
-                    message: '欢迎',
-                    type: 'success'
-                  });
-                  this.$router.push("/homepage")
+              // 获取登录信息
+              this.$store.state.Token.token = response.data
+              this.$axios.get('/api/user/getUser/'+this.user.userName).then(response=>{
+                this.$store.state.Token.userID=response.data.id
+                console.log("获取用户ID："+this.$store.state.Token.userID)
+              })
+              // 获取用户登录信息
+              this.getUseInfo.ip= sessionStorage.getItem('ip')
+              this.getUseInfo.area = sessionStorage.getItem('area')
+              this.getUseInfo.brower = sysTool.GetCurrentBrowser()
+              this.getUseInfo.os = sysTool.GetOs()
+              console.log('ip地址：',  this.getUseInfo.ip, '地区：',this.getUseInfo.area,'浏览器：',this.getUseInfo.brower,'操作系统：' ,this.getUseInfo.os)
+              this.$axios.post('/api/user/postLoginInfo'+this.getUseInfo).then(response=>{
+                console.log("同步登录信息成功！")
               },
+              error=>{
+                console.log("同步登录信息失败！")
+              })
+              // 登录成功提示
+              this.$message({
+                message: '欢迎',
+                type: 'success'
+              });
+              // 登录成功跳转
+              this.$router.push("/homepage")
+            },
             error=>{
               this.$message({
                 message:error,

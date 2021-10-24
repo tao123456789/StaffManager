@@ -41,7 +41,6 @@
 </template>
 
 <script>
-
 export default {
   name: "homepage",
   data(){
@@ -50,7 +49,7 @@ export default {
       show:false,
       menu:[],
       ButtonCount:[],
-      checkedKeys : []
+      checkedKeys : [],
     }
   },
   components:{
@@ -102,10 +101,7 @@ export default {
     },
   },
   beforeMount(){
-    let userID=this.$store.state.Token.userID
-    console.log("全局参数的userid"+this.$store.state.Token.userID)
-    console.log("全局参数的token"+this.$store.state.Token.token)
-    this.$axios.get('/api/menu/getMenu/'+userID,{
+    this.$axios.get('/api/menu/getMenu/'+this.$store.state.Token.userID,{
       headers:{
         'Content-Type':'application/json',
         'token':this.$store.state.Token.token

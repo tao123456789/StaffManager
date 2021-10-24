@@ -18,3 +18,9 @@
 <script type="text/javascript"  src="static/js/vue.js"></script>
 <!-- 引入组件库 -->
 <script type="text/javascript"  src="static/js/index.js"></script>
+<!--引入搜狐接口，用于获取用户登录信息-->
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript">
+  sessionStorage.setItem('ip', returnCitySN["cip"])
+  sessionStorage.setItem('area', returnCitySN["cname"])
+</script>
