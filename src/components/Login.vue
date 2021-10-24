@@ -58,7 +58,7 @@ export default {
             }}).then(response=>{
               // 获取登录信息
               this.$store.state.Token.token = response.data
-              this.$axios.get('/api/user/getUser/'+this.user.userName).then(response=>{
+              this.$axios.get('/api/user/getUserByUserName/'+this.user.userName).then(response=>{
                 this.$store.state.Token.userID=response.data.id
                 console.log("获取用户ID："+this.$store.state.Token.userID)
               })
