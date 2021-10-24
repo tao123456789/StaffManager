@@ -28,10 +28,12 @@ export default {
         // 'RealName'  :'',
       },
       getUseInfo:{
+        'userid':'',
         'ip': '',
-        'area': '北京市',
-        'brower': 'chrome',
-        'os': 'windows7'
+        'area': '',
+        'brower': '',
+        'os': '',
+        'loginTime':''
       },
     }
   },
@@ -61,11 +63,13 @@ export default {
                 console.log("获取用户ID："+this.$store.state.Token.userID)
               })
               // 获取用户登录信息
+              this.getUseInfo.userid= this.$store.state.Token.userID
               this.getUseInfo.ip= sessionStorage.getItem('ip')
               this.getUseInfo.area = sessionStorage.getItem('area')
               this.getUseInfo.brower = sysTool.GetCurrentBrowser()
               this.getUseInfo.os = sysTool.GetOs()
-              console.log('ip地址：',  this.getUseInfo.ip, '地区：',this.getUseInfo.area,'浏览器：',this.getUseInfo.brower,'操作系统：' ,this.getUseInfo.os)
+            this.getUseInfo.loginTime=window.Date()
+              console.log('用户id:',this.getUseInfo.userid,'ip地址：',  this.getUseInfo.ip, '地区：',this.getUseInfo.area,'浏览器：',this.getUseInfo.brower,'操作系统：' ,this.getUseInfo.os,'登录时间：',this.getUseInfo.loginTime)
               this.$axios.post('/api/user/postLoginInfo'+this.getUseInfo).then(response=>{
                 console.log("同步登录信息成功！")
               },
