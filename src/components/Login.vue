@@ -28,7 +28,7 @@ export default {
         // 'RealName'  :'',
       },
       getUseInfo:{
-        'userid':'',
+        'id':'',
         'ip': '',
         'area': '',
         'brower': '',
@@ -68,21 +68,24 @@ export default {
               this.getUseInfo.area = sessionStorage.getItem('area')
               this.getUseInfo.brower = sysTool.GetCurrentBrowser()
               this.getUseInfo.os = sysTool.GetOs()
-            this.getUseInfo.loginTime=window.Date()
+              this.getUseInfo.loginTime=window.Date()
               console.log('用户id:',this.getUseInfo.userid,'ip地址：',  this.getUseInfo.ip, '地区：',this.getUseInfo.area,'浏览器：',this.getUseInfo.brower,'操作系统：' ,this.getUseInfo.os,'登录时间：',this.getUseInfo.loginTime)
-              this.$axios.post('/api/user/postLoginInfo'+this.getUseInfo).then(response=>{
-                console.log("同步登录信息成功！")
+              this.$axios.post('/api/user/updateUserInfo',JSON.stringify(this.getUseInfo),{
+                headers:{
+                  'Content-Type':'application/json'
+                }}).then(response=>{
+                console.log(response.data)
+                  // 登录成功跳转
+                  this.$router.push("/index")
               },
               error=>{
-                console.log("同步登录信息失败！")
+                console.log("同步登录信息失败！"+response.data)
               })
               // 登录成功提示
               this.$message({
                 message: '欢迎',
                 type: 'success'
               });
-              // 登录成功跳转
-              this.$router.push("/homepage")
             },
             error=>{
               this.$message({

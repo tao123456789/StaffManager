@@ -5,7 +5,6 @@
   <el-header height="70px">
     <el-container direction="horizontal">
         <h1 style="font-size: 35px">后台管理系统</h1>
-      <p @click="quit()" style="margin-right: 10px;float:right">退出</p>
     </el-container>
   </el-header>
 
@@ -90,7 +89,7 @@ export default {
     handleClose(i){
       if(this.ButtonCount.length===1){
         this.ButtonCount.splice(i, 1)
-        this.$router.push('/homepage')
+        this.$router.push('/MMS')
         this.show = false
       }else {
         this.ButtonCount.splice(i, 1)
