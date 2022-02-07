@@ -8,9 +8,9 @@
         </el-container>
       </el-header>
     </el-container>
-    <el-container>
+    <el-container style="background-color: #72767b;" direction="vertical">
       <div style="padding-top: 20px ">
-        <el-input class="selectInput" type="text"></el-input>
+        <el-input class="selectInput" placeholder="请输入请求地址"></el-input>
         <el-select v-model="value"  placeholder="请选择">
           <el-option
             v-for="item in options"
@@ -42,9 +42,6 @@ export default {
       }, {
         value: '选项4',
         label: '---'
-      }, {
-        value: '选项5',
-        label: '---'
       }],
       value: ''
     }
@@ -59,10 +56,15 @@ export default {
   color: white;
 }
 .el-input{
-  width: 110px;
+  width: 80px;
 }
 .selectInput{
   padding-left: 20px;
   width: 800px;
+}
+.selectInput2{
+  padding-left: 20px;
+  width: 800px;
+  height: 300px;
 }
 </style>

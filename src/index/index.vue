@@ -4,7 +4,7 @@
       <div style="padding-right: 20px">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>个人应用系统</span>
+            <span style="font-size: 30px">个人应用系统</span>
             <el-button style="float: right;width: 150px" type="primary" @click="enterMyTools">点击进入</el-button>
           </div>
           <el-form style="background-image: url('../../static/img/img3.jpg');background-size: cover;height: 200px">
@@ -17,7 +17,7 @@
       <div>
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>物料后台管理系统</span>
+            <span style="font-size: 30px">后台管理系统</span>
             <el-button style="float: right;width: 150px" type="primary" @click="enterMMS">点击进入</el-button>
           </div>
           <el-form style="background-image: url('../../static/img/img2.png');background-size: cover;height: 200px">
@@ -30,7 +30,20 @@
       <div style="padding-right: 20px">
         <el-card class="box-card">
           <div slot="header" class="clearfix">
-            <span>开发中......</span>
+            <span style="font-size: 30px">前端组件Demo库</span>
+            <el-button style="float: right;width: 150px" type="primary" @click="enterDemo">点击进入</el-button>
+          </div>
+          <el-form style="background-image: url('../../static/img/img4.png');background-size: cover;height: 200px">
+            <el-form-item label="说明：" ></el-form-item>
+            <el-form-item>用于记录前端的组件应用</el-form-item>
+            <el-form-item></el-form-item>
+          </el-form>
+        </el-card>
+      </div>
+      <div style="padding-right: 20px">
+        <el-card class="box-card">
+          <div slot="header" class="clearfix">
+            <span style="font-size: 30px">开发中......</span>
             <el-button style="float: right;width: 150px" type="primary" @click="enterTest">点击进入</el-button>
           </div>
           <el-form style="background-image: url('../../static/img/img1.jpg');background-size: cover;height: 200px">
@@ -61,6 +74,9 @@ export default {
     },
     enterMyTools(){
       this.$router.push("/myTools")
+    },
+    enterDemo(){
+      this.$router.push("/demo")
     }
   }
 }

@@ -1,12 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../components/Login'
-import MMS from "../components/mms/homepage/homepage";
+import MMS from "../components/mms/index/index";
 import index from "../index/index";
 import allMaterial from '../components/mms/material/allMaterial'
 import allUser from "../components/mms/user/allUser";
 import test from "../components/test"
-import myTools from "../components/myTools/homepage/homepage"
+import myTools from "../components/myTools/index/index"
+import demo from "../components/demo/index/index"
 
 Vue.use(Router)
 
@@ -46,12 +47,18 @@ export default new Router({
           },
       ]
     },
+    //myTools系统的路由
     {
       path:'/myTools',
       name:'myTools',
       component:myTools,
-      children: [
-      ]
+      children: []
+    },
+    {
+      path:'/demo',
+      name:demo,
+      component:demo,
+      children:[]
     }
   ]
 })
