@@ -1,36 +1,36 @@
 <template>
 <div id="homepage">
-<el-container>
-<!--  顶栏-->
-  <el-header height="70px">
-    <el-container direction="horizontal">
-        <h1 style="font-size: 35px">后台管理系统</h1>
-    </el-container>
-  </el-header>
-
-<!--  嵌套容器-->
   <el-container>
-<!--    侧边导航菜单-->
-    <el-aside width="200px">
-      <el-row>
-        <el-col>
-          <button type="primary" v-for="(item,i) in menu" style="width: 100%; height: 30px"  @click="handleClick(item.action_url,item.action_name)">{{item.action_name}}</button>
-        </el-col>
-      </el-row>
-    </el-aside>
+  <!--  顶栏-->
+    <el-header height="70px">
+      <el-container direction="horizontal">
+          <h1 style="height:60px;font-size: 35px;padding-top: 10px;">后台管理系统</h1>
+      </el-container>
+    </el-header>
 
-<!--    内容-->
-    <el-main>
-        <el-tag v-for="(item,i) in ButtonCount" closable :disable-transitions="false"  v-bind:key="item" @close="handleClose(i)">
-          {{item}}
-        </el-tag>
+  <!--  嵌套容器-->
+    <el-container>
+  <!--    侧边导航菜单-->
+      <el-aside width="200px">
+        <el-row>
+          <el-col>
+            <button type="primary" v-for="(item,i) in menu" style="width: 100%; height: 30px"  @click="handleClick(item.action_url,item.action_name)">{{item.action_name}}</button>
+          </el-col>
+        </el-row>
+      </el-aside>
+
+  <!--    内容-->
       <el-main>
-        <router-view v-if="show"/>
+          <el-tag v-for="(item,i) in ButtonCount" closable :disable-transitions="false"  v-bind:key="item" @close="handleClose(i)">
+            {{item}}
+          </el-tag>
+        <el-main>
+          <router-view v-if="show"/>
+        </el-main>
       </el-main>
-    </el-main>
 
+    </el-container>
   </el-container>
-</el-container>
 
 <!--  底栏-->
   <el-footer height="40px">
@@ -119,12 +119,12 @@ export default {
 <style>
 /*顶部样式*/
 .el-header{
-  background-color: dimgray;
+  background-color: dodgerblue;
   color: white;
 }
 /*左侧样式*/
 .el-aside{
-  background-color: #84C1FF;
+  background-color: #C4E1FF	;
   height: 866px;
 }
 /*底栏样式*/
