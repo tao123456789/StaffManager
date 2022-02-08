@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router/index'
-import ElementUI from 'element-ui'
+import ElementUI, {Message} from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
@@ -13,6 +13,21 @@ Vue.config.productionTip = false
 Vue.prototype.$axios = axios
 Vue.use(VueAxios,axios);
 Vue.use(ElementUI)
+
+router.beforeEach((to,from,next)=>{
+  let token=sessionStorage.getItem('token')
+  if(to.path==='/'){
+    return next()
+  }else{
+    if(!token){
+      console.log('Token已失效！请重新登录！')
+      Message.error('Token已失效！请重新登录！')
+      return next('/')
+    }else{
+      return next()
+    }
+  }
+})
 
 /* eslint-disable no-new */
 new Vue({

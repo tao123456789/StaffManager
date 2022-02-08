@@ -56,13 +56,19 @@ export default {
             headers:{
               'Content-Type':'application/json'
             }}).then(response=>{
-              // 获取登录信息
+              // 获取token，并存储在store中
               this.$store.state.Token.token = response.data
+
+              //存储token在sessionStarage，浏览器页面签关闭即删除sessionStarage
+              sessionStorage.setItem('token',response.data)
+
+              //根据username获取用户id，并存储在store中
               this.$axios.get('/api/user/getUserByUserName/'+this.user.userName).then(response=>{
                 this.$store.state.Token.userID=response.data.id
                 console.log("获取用户ID："+this.$store.state.Token.userID)
               })
-              // 获取用户登录信息
+
+              // 获取用户本地登录信息
               this.getUseInfo.userid= this.$store.state.Token.userID
               this.getUseInfo.ip= sessionStorage.getItem('ip')
               this.getUseInfo.area = sessionStorage.getItem('area')
