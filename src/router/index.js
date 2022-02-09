@@ -7,7 +7,7 @@ import allMaterial from '../components/mms/material/allMaterial'
 import allUser from "../components/mms/user/allUser";
 import test from "../components/test"
 import myTools from "../components/myTools/index/index"
-import demo from "../components/demo/index/index"
+import demo from "../layout/demoLayout/demoLayout"
 
 Vue.use(Router)
 

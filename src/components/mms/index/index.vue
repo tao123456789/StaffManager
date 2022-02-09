@@ -12,6 +12,32 @@
     <el-container>
   <!--    侧边导航菜单-->
       <el-aside width="200px">
+        <div class="base-aside">
+        <el-menu
+          class="el-menu-vertical-demo"
+          background-color="#fff"
+          text-color="#666"
+          active-text-color="#345ACF"
+          router>
+          <el-submenu
+            v-for="(menu, index) in menuData"
+            :key="index"
+            :index="index">
+            <template slot="title">
+              <i :class="[menu.icon]"></i>
+              <span>{{menu.name}}</span>
+            </template>
+
+            <el-menu-item
+              v-for="(item, i) in menu.children"
+              :key="index+'-'+i"
+              :index="item.url"
+              @click="clickMenu(item)">
+              <span>{{item.name}}</span>
+            </el-menu-item>
+          </el-submenu>
+        </el-menu>
+        </div>
         <el-row>
           <el-col>
             <button type="primary" v-for="(item,i) in menu" style="width: 100%; height: 30px"  @click="handleClick(item.action_url,item.action_name)">{{item.action_name}}</button>
@@ -49,10 +75,15 @@ export default {
       menu:[],
       ButtonCount:[],
       checkedKeys : [],
+      //el-menu的菜单数据
+      menuData: [],
+      isCollapse: false
     }
   },
+  //引入组件
   components:{
   },
+
   methods: {
     test2(i) {
       this.$message.success(this.ButtonCount[i])
@@ -98,6 +129,13 @@ export default {
         this.show = true
       }
     },
+
+    //重做左边menu栏
+    // 点击菜单
+    clickMenu(value) {
+      //通过vuex将数据存储在store中
+      this.$store.commit('mutationSelectTags', value)
+    }
   },
   beforeMount(){
     this.$axios.get('/api/menu/getMenu/'+this.$store.state.Token.userID,{
@@ -109,6 +147,40 @@ export default {
       console.log("获取用户的菜单"+response.data)
       this.menu=response.data.actionArr
       console.log("获取赋值"+this.menu)
+      //静态菜单
+      this.menuData = [{
+        icon: 'el-icon-postcard',
+        name: '授信管理',
+        url: "/",
+        children: [{
+          name: "授信审核",
+          url: '/risk/riskCredit',
+        }]
+      },
+        {
+          icon: 'el-icon-tickets',
+          name: '订单管理',
+          url: "/",
+          children: [
+            {
+              name: "订单管理",
+              url: '/stock/coreStockList',
+            }
+          ]
+        },
+        {
+          icon: 'el-icon-document-checked',
+          name: '合同管理',
+          url: "/",
+          children: [
+            {
+              name: "订单合同",
+              url: '/contract/coreContractList',
+            }
+          ]
+        },
+        //省略 ...
+      ];
     },error=>{
       this.$message.error(error)
     })
