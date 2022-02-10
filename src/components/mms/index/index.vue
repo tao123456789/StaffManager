@@ -22,7 +22,7 @@
           <el-submenu
             v-for="(menu, index) in menuData"
             :key="index"
-            :index="index">
+            :index="index+''">
             <template slot="title">
               <i :class="[menu.icon]"></i>
               <span>{{menu.name}}</span>
@@ -38,18 +38,10 @@
           </el-submenu>
         </el-menu>
         </div>
-        <el-row>
-          <el-col>
-            <button type="primary" v-for="(item,i) in menu" style="width: 100%; height: 30px"  @click="handleClick(item.action_url,item.action_name)">{{item.action_name}}</button>
-          </el-col>
-        </el-row>
       </el-aside>
 
   <!--    内容-->
       <el-main>
-          <el-tag v-for="(item,i) in ButtonCount" closable :disable-transitions="false"  v-bind:key="item" @close="handleClose(i)">
-            {{item}}
-          </el-tag>
         <el-main>
           <router-view v-if="show"/>
         </el-main>
@@ -85,56 +77,12 @@ export default {
   },
 
   methods: {
-    test2(i) {
-      this.$message.success(this.ButtonCount[i])
-    },
-    quit(){
-      this.$router.push('/')
-    },
-
-    //统一处理menu的按钮事件
-    handleClick(url,name){
-      var exit=false
-      var i
-
-      for(i=0;i<this.ButtonCount.length+1;i++){
-        if(name===this.ButtonCount[i]){
-          exit=true
-          break
-        }
-      }
-
-      if(exit===false) {
-        this.ButtonCount.push(name)
-      }
-
-      if(this.$route.path===url) {
-        this.$message.success("页面已开启！！！")
-      }else{
-        this.show=true
-        this.$router.push(url)
-      }
-    },
-
-    //tag标签关闭
-    handleClose(i){
-      if(this.ButtonCount.length===1){
-        this.ButtonCount.splice(i, 1)
-        this.$router.push('/MMS')
-        this.show = false
-      }else {
-        this.ButtonCount.splice(i, 1)
-        this.show = false
-        this.$router.go(-1)
-        this.show = true
-      }
-    },
-
     //重做左边menu栏
     // 点击菜单
     clickMenu(value) {
       //通过vuex将数据存储在store中
-      this.$store.commit('mutationSelectTags', value)
+      this.show=true
+      this.$router.push(value.url)
     }
   },
   beforeMount(){
@@ -144,43 +92,8 @@ export default {
         'token':this.$store.state.Token.token
       }
     }).then(response=>{
-      console.log("获取用户的菜单"+response.data)
-      this.menu=response.data.actionArr
-      console.log("获取赋值"+this.menu)
-      //静态菜单
-      this.menuData = [{
-        icon: 'el-icon-postcard',
-        name: '授信管理',
-        url: "/",
-        children: [{
-          name: "授信审核",
-          url: '/risk/riskCredit',
-        }]
-      },
-        {
-          icon: 'el-icon-tickets',
-          name: '订单管理',
-          url: "/",
-          children: [
-            {
-              name: "订单管理",
-              url: '/stock/coreStockList',
-            }
-          ]
-        },
-        {
-          icon: 'el-icon-document-checked',
-          name: '合同管理',
-          url: "/",
-          children: [
-            {
-              name: "订单合同",
-              url: '/contract/coreContractList',
-            }
-          ]
-        },
-        //省略 ...
-      ];
+      console.log("获取用户的菜单"+JSON.stringify(response.data))
+      this.menuData=response.data
     },error=>{
       this.$message.error(error)
     })
