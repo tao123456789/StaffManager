@@ -17,6 +17,7 @@
 
 <script>
 import * as sysTool from '../assets/systemTool';
+
 export default {
   name: 'Login',
   data() {
@@ -33,7 +34,7 @@ export default {
         'area': '',
         'brower': '',
         'os': '',
-        'loginTime':''
+        'logintime':''
       },
     }
   },
@@ -69,12 +70,15 @@ export default {
               })
 
               // 获取用户本地登录信息
-              this.getUseInfo.userid= this.$store.state.Token.userID
+              this.getUseInfo.id= this.$store.state.Token.userID
               this.getUseInfo.ip= sessionStorage.getItem('ip')
+
               this.getUseInfo.area = sessionStorage.getItem('area')
               this.getUseInfo.brower = sysTool.GetCurrentBrowser()
               this.getUseInfo.os = sysTool.GetOs()
-              this.getUseInfo.loginTime=window.Date()
+            //window.Date()
+              let data=new Date()
+              this.getUseInfo.logintime=data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate() + " " + data.getHours()+":"+data.getMinutes()+":"+data.getSeconds()
               console.log('用户id:',this.getUseInfo.userid,'ip地址：',  this.getUseInfo.ip, '地区：',this.getUseInfo.area,'浏览器：',this.getUseInfo.brower,'操作系统：' ,this.getUseInfo.os,'登录时间：',this.getUseInfo.loginTime)
               this.$axios.post('/api/user/updateUserInfo',JSON.stringify(this.getUseInfo),{
                 headers:{

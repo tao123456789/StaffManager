@@ -5,6 +5,7 @@ import MMS from "../components/mms/index/index";
 import index from "../index/index";
 import allMaterial from '../components/mms/material/allMaterial'
 import allUser from "../components/mms/user/allUser";
+import menuSetting from "../components/mms/setting/menuSetting/index"
 import test from "../components/test"
 import myTools from "../components/myTools/index/index"
 import demo from "../layout/demoLayout/demoLayout"
@@ -51,6 +52,11 @@ export default new Router({
             name: 'test',
             component: test
           },
+        {
+          path:'/menuSetting',
+          name:'menuSetting',
+          component:menuSetting,
+        },
       ]
     },
     //myTools系统的路由
