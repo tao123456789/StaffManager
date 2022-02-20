@@ -4,7 +4,7 @@
   <!--  顶栏-->
     <el-header height="70px">
       <el-container direction="horizontal">
-          <h1 style="height:60px;font-size: 35px;padding-top: 10px;">后台管理系统</h1>
+          <h1 style="height:60px;font-size: 35px;padding-top: 10px;color: white">物料管理后台系统</h1>
       </el-container>
     </el-header>
 
@@ -104,8 +104,7 @@ export default {
 <style>
 /*顶部样式*/
 .el-header{
-  background-color: dodgerblue;
-  color: white;
+  background-color: #0072E3;
 }
 /*左侧样式*/
 .el-aside{

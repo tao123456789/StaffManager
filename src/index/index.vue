@@ -82,7 +82,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -93,5 +93,8 @@ export default {
 }
 .box-card {
   width: 450px;
+}
+.el-card:hover{
+  margin-top: -10px;
 }
 </style>

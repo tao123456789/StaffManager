@@ -4,8 +4,12 @@
     <el-form-item>
       <el-input style="width: 200px" v-model="info"></el-input>
       <el-button @click="find">查找</el-button>
-      <el-button @click="reset()">重置</el-button>
-      <el-button @click="upload()" plain>选择文件</el-button>
+      <el-button @click="reset">重置</el-button>
+      <el-button @click="upload" plain>选择文件</el-button>
+    </el-form-item>
+    <el-form-item>
+      <el-button @click="addMaterial" type="primary">新建物料</el-button>
+      <el-button @click="addMaterial" type="danger">删除物料</el-button>
     </el-form-item>
   </el-form>
   <el-table :data="materialListTemp" border stripe>
@@ -107,6 +111,10 @@ export default {
       this.selectedList=[]
     },
 
+    addMaterial(){
+
+    },
+
     // 上传文件
     upload(){
       this.uploadShow=true
@@ -201,4 +209,13 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+.el-form-item__content {
+  height: 30px;
+}
+.el-button{
+  width: 110px;
+}
+</style>
 
