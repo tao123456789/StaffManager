@@ -9,18 +9,39 @@
         </el-container>
       </el-header>
       <div style="padding-right: 20px;padding-top: 20px;padding-left: 20px">
-        <el-card class="box-card">
-          <div slot="header" class="clearfix">
-            <span style="font-size: 30px">常用网站</span>
-          </div>
-          <el-form style="height: 200px;width: 600px">
-            <el-form-item>个人GIT地址：  <a href="https://github.com/tao123456789" target="_blank">https://github.com/tao123456789</a></el-form-item>
-            <el-form-item>微信公众号平台：  <a href="https://mp.weixin.qq.com/cgi-bin/home" target="_blank">https://mp.weixin.qq.com/cgi-bin/home</a></el-form-item>
-            <el-form-item>B站首页：  <a href="https://www.bilibili.com/" target="_blank">https://www.bilibili.com/</a></el-form-item>
-            <el-form-item>虎牙直播：  <a href="https://www.huya.com/l" target="_blank">https://www.huya.com/l</a></el-form-item>
-            <el-form-item></el-form-item>
-          </el-form>
-        </el-card>
+        <el-row :gutter="20">
+          <!--        xs	<768px 响应式栅格数或者栅格属性对象	用于超小型设备-->
+          <!--        sm	≥768px 响应式栅格数或者栅格属性对象	用于小屏设备-->
+          <!--        md	≥992px 响应式栅格数或者栅格属性对象	用于中屏设备-->
+          <!--        lg	≥1200px 响应式栅格数或者栅格属性对象	用于大屏设备-->
+          <!--        xl	≥1920px 响应式栅格数或者栅格属性对象	用于超大屏设备-->
+          <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="7">
+            <el-card class="box-card">
+              <div slot="header" class="clearfix">
+                <span style="font-size: 30px">常用网站</span>
+              </div>
+              <el-form style="height: 200px;width: 400px">
+                <el-form-item>个人GIT地址：  <a href="https://github.com/tao123456789" target="_blank">https://github.com/tao123456789</a></el-form-item>
+                <el-form-item>微信公众号平台：  <a href="https://mp.weixin.qq.com/cgi-bin/home" target="_blank">https://mp.weixin.qq.com/cgi-bin/home</a></el-form-item>
+                <el-form-item>B站首页：  <a href="https://www.bilibili.com/" target="_blank">https://www.bilibili.com/</a></el-form-item>
+                <el-form-item>虎牙直播：  <a href="https://www.huya.com/l" target="_blank">https://www.huya.com/l</a></el-form-item>
+              </el-form>
+            </el-card>
+          </el-col>
+          <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="6">
+            <el-card class="box-card">
+              <div slot="header" class="clearfix">
+                <span style="font-size: 30px">个人网盘文件</span>
+              </div>
+              <el-form style="height: 200px;width: 400px">
+                <el-form-item v-for="(item,index) in menuData" :key="index">{{item}}
+                  <el-button style="float: right" type="danger">删除</el-button>
+                  <el-button style="float: right;margin-right: 10px" type="primary">下载</el-button>
+                </el-form-item>
+              </el-form>
+            </el-card>
+          </el-col>
+        </el-row>
       </div>
     </el-container>
   </div>
@@ -31,21 +52,25 @@ export default {
   name: "homepage",
   data(){
     return{
-      options: [{
-        value: '选项1',
-        label: 'GET'
-      }, {
-        value: '选项2',
-        label: 'POST'
-      }, {
-        value: '选项3',
-        label: 'DELETE'
-      }, {
-        value: '选项4',
-        label: '---'
-      }],
+      menuData: [],
       value: ''
     }
+  },
+  beforeMount(){
+    this.$axios.get('/api/XPHnetDisk/getFileList',{
+      headers:{
+        'Content-Type':'application/json',
+        'token':this.$store.state.Token.token,
+      },
+      params:{
+        'url':'/user/data/upload'
+      }
+    }).then(response=>{
+      console.log("获取网盘的目录"+JSON.stringify(response.data))
+      this.menuData=response.data
+    },error=>{
+      this.$message.error(error)
+    })
   }
 }
 </script>
@@ -69,10 +94,13 @@ export default {
   height: 300px;
 }
 .box-card {
-  width: 650px;
+  width: 500px;
   min-height: 200px;
 }
 .el-card:hover{
   margin-top: -10px;
+}
+.el-button {
+  width: 70px;
 }
 </style>
