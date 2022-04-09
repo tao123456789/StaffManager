@@ -36,7 +36,7 @@
               <el-form style="height: 200px;width: 400px">
                 <el-form-item v-for="(item,index) in menuData" :key="index">{{item}}
                   <el-button style="float: right" type="danger">删除</el-button>
-                  <el-button style="float: right;margin-right: 10px" type="primary">下载</el-button>
+                  <el-button style="float: right;margin-right: 10px" type="primary" @click="download(item)">下载</el-button>
                 </el-form-item>
               </el-form>
             </el-card>
@@ -54,6 +54,41 @@ export default {
     return{
       menuData: [],
       value: ''
+    }
+  },
+  methods:{
+    download(item){
+      console.log(item)
+      this.$axios.get('/api/XPHnetDisk/downloadFile',{
+        headers:{
+          'Content-Type':'application/json',
+          'token':this.$store.state.Token.token,
+          'responseType': 'blob'
+        },
+        params:{
+          'url':'/user/data/upload/'+item
+        }
+      }).then(response=>{
+        // console.log(response.data)
+        // const link = document.createElement('a')
+        // const blob = new Blob([response.data],{ type: 'application/octet-stream' })
+        // link.href = window.URL.createObjectURL(blob)
+        // link.download=item
+        // link.click()
+        // window.URL.revokeObjectURL(link.href)
+        let url = window.URL.createObjectURL(new Blob([response.data]));
+        let link = document.createElement("a");
+        link.style.display = "none";
+        link.href = url;
+        link.setAttribute("download", item);
+        document.body.appendChild(link);
+        link.click();
+
+        document.body.removeChild(link); // 下载完成移除元素
+        window.URL.revokeObjectURL(url); // 释放掉blob对象
+      },error=>{
+        this.$message.error(error)
+      })
     }
   },
   beforeMount(){
