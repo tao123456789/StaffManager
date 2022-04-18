@@ -1,18 +1,18 @@
 <template>
 <div id="allMaterial">
-  <el-form>
-    <el-form-item>
-      <el-input style="width: 200px" v-model="info"></el-input>
+  <el-form style="width: 100%">
+    <el-form-item style="width: 100%">
+      <el-input style="width: 40%" v-model="info"></el-input>
       <el-button @click="find">查找</el-button>
       <el-button @click="reset">重置</el-button>
       <el-button @click="upload" plain>选择文件</el-button>
     </el-form-item>
-    <el-form-item>
+    <el-form-item style="width: 100%">
       <el-button @click="addMaterial" type="primary">新建物料</el-button>
       <el-button @click="addMaterial" type="danger">删除物料</el-button>
     </el-form-item>
   </el-form>
-  <el-table :data="materialListTemp" border stripe>
+  <el-table :data="materialListTemp" border stripe style="width: 120%">
     <el-table-column label="勾选" prop="" width="60px"><el-checkbox></el-checkbox></el-table-column>
     <el-table-column label="序号" prop="id" width="60px"></el-table-column>
     <el-table-column label="物料编码" prop="material_id"></el-table-column>
@@ -59,6 +59,7 @@
       </el-form-item>
     </el-form>
   </el-dialog>
+
 </div>
 
 </template>
@@ -215,7 +216,7 @@ export default {
   height: 30px;
 }
 .el-button{
-  width: 110px;
+  width: 20%;
 }
 </style>
 

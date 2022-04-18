@@ -7,7 +7,7 @@
 <!--        md	≥992px 响应式栅格数或者栅格属性对象	用于中屏设备-->
 <!--        lg	≥1200px 响应式栅格数或者栅格属性对象	用于大屏设备-->
 <!--        xl	≥1920px 响应式栅格数或者栅格属性对象	用于超大屏设备-->
-        <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="6">
+        <el-col :xs="24" :sm="24" :md="24" :lg="7" :xl="6">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span style="font-size: 30px">个人应用系统</span>
@@ -15,7 +15,7 @@
             </div>
             <el-form style="background-image: url('../../static/img/img3.jpg');background-size: cover;height: 200px">
               <el-form-item label="说明：" ></el-form-item>
-              <el-form-item>用于个人应用开发</el-form-item>
+              <el-form-item style="width: 200px">用于个人应用开发，包括常用的地址记录，个人的网盘的功能等</el-form-item>
               <el-form-item></el-form-item>
             </el-form>
           </el-card>
@@ -27,9 +27,20 @@
               <el-button style="float: right;width: 150px" type="primary" @click="enterMMS">点击进入</el-button>
             </div>
             <el-form style="background-image: url('../../static/img/img2.png');background-size: cover;height: 200px">
-              <el-form-item label="2022-02-07  更新说明：" ></el-form-item>
-              <el-form-item style="font-size: 200%">1，加入首页的卡片界面</el-form-item>
-              <el-form-item>1，更新首页信息</el-form-item>
+              <el-form-item label="说明：" ></el-form-item>
+              <el-form-item style="width: 250px">对物料信息进行管理的一个系统，功能暂未完全实现，慢慢做，不着急</el-form-item>
+            </el-form>
+          </el-card>
+        </el-col>
+        <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="6">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span style="font-size: 30px">日志系统</span>
+              <el-button style="float: right;width: 150px" type="primary" @click="enterLog">点击进入</el-button>
+            </div>
+            <el-form style="background-image: url('../../static/img/img5.jpg');background-size: cover;height: 200px">
+              <el-form-item label="说明：" ></el-form-item>
+              <el-form-item style="width: 200px">用于查看所有日志的系统入口，暂未实现，目标是将该系统的日志文件都纳入管理</el-form-item>
             </el-form>
           </el-card>
         </el-col>
@@ -54,7 +65,6 @@
             </div>
             <el-form style="background-image: url('../../static/img/img1.jpg');background-size: cover;height: 200px">
               <el-form-item label="说明：" ></el-form-item>
-              <el-form-item>通过路由控制系统入口，进行转发</el-form-item>
               <el-form-item></el-form-item>
             </el-form>
           </el-card>
@@ -83,7 +93,10 @@ export default {
     },
     enterDemo(){
       this.$router.push("/demo")
-    }
+    },
+    enterLog(){
+      this.$message.success("开发中！！！")
+    },
   }
 }
 </script>

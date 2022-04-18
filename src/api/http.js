@@ -152,11 +152,11 @@ export default {
       }
     })
   },
-  get(url){
+  get(url,params){
     return http({
       method:'get',
       url,
-      // params,
+      params,
       timeout:3000,
       headers:{
 
