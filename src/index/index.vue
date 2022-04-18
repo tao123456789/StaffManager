@@ -28,7 +28,7 @@
             </div>
             <el-form style="background-image: url('../../static/img/img2.png');background-size: cover;height: 200px">
               <el-form-item label="说明：" ></el-form-item>
-              <el-form-item style="width: 250px">对物料信息进行管理的一个系统，功能暂未完全实现，慢慢做，不着急</el-form-item>
+              <el-form-item style="width: 200px">对物料信息进行管理的一个系统，功能暂未完全实现，慢慢做，不着急</el-form-item>
             </el-form>
           </el-card>
         </el-col>
@@ -110,10 +110,16 @@ export default {
 .clearfix:after {
   clear: both
 }
+/*.el-card:hover{*/
+/*  margin-top: -10px;*/
+/*}*/
 .box-card {
-  width: 450px;
+  min-width: 400px;
+  min-height: 200px;
 }
-.el-card:hover{
-  margin-top: -10px;
-}
+.el-form {
+   height: 200px;
+   width: 450px
+ }
+
 </style>

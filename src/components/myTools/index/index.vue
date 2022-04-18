@@ -3,24 +3,22 @@
     <el-container>
       <!--  顶栏-->
       <el-header>
-        <el-container direction="horizontal" >
           <h1 style="height:60px;font-size: 35px;padding-top: 10px;">个人应用</h1>
 <!--          <el-input style="height:60px;width: 300px;padding-top: 17px;padding-left: 30%" placeholder="请输入内容"></el-input>-->
-        </el-container>
       </el-header>
-      <div style="padding-right: 20px;padding-top: 20px;padding-left: 20px">
+      <div style="padding-right: 10px;padding-top: 20px;padding-left: 10px">
         <el-row :gutter="20">
           <!--        xs	<768px 响应式栅格数或者栅格属性对象	用于超小型设备-->
           <!--        sm	≥768px 响应式栅格数或者栅格属性对象	用于小屏设备-->
           <!--        md	≥992px 响应式栅格数或者栅格属性对象	用于中屏设备-->
           <!--        lg	≥1200px 响应式栅格数或者栅格属性对象	用于大屏设备-->
           <!--        xl	≥1920px 响应式栅格数或者栅格属性对象	用于超大屏设备-->
-          <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="7">
+          <el-col :xs="24" :sm="24" :md="10" :lg="7" :xl="7">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">常用网站</span>
               </div>
-              <el-form style="height: 200px;width: 400px">
+              <el-form>
                 <el-form-item>个人GIT地址：  <a href="https://github.com/tao123456789" target="_blank">https://github.com/tao123456789</a></el-form-item>
                 <el-form-item>微信公众号平台：  <a href="https://mp.weixin.qq.com/cgi-bin/home" target="_blank">https://mp.weixin.qq.com/cgi-bin/home</a></el-form-item>
                 <el-form-item>B站首页：  <a href="https://www.bilibili.com/" target="_blank">https://www.bilibili.com/</a></el-form-item>
@@ -28,14 +26,14 @@
               </el-form>
             </el-card>
           </el-col>
-          <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="7">
+          <el-col :xs="24" :sm="24" :md="10" :lg="7" :xl="7">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">个人网盘文件</span>
               </div>
-              <el-form style="height: 200px;width: 400px">
+              <el-form>
                 <el-form-item v-for="(item,index) in DiskNetData" :key="index">{{item}}
-                  <el-button style="float: right" type="danger">删除</el-button>
+                  <el-button style="float: right;margin-right: 10px" type="danger">删除</el-button>
                   <el-button style="float: right;margin-right: 10px" type="primary" @click="download(item)">下载</el-button>
                 </el-form-item>
               </el-form>
@@ -45,19 +43,35 @@
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">每日计划</span>
-                <el-button style="float: right;margin-right: 10px" type="primary" @click="getSchedule">查看</el-button>
+                <el-button style="float: right;margin-right: 10px;width: 140px" type="primary" @click="getSchedule">每日固定计划</el-button>
               </div>
-              <el-form style="height: 200px;width: 400px">
+              <el-form>
                 <el-form-item v-for="(item,index) in SchedulesTask" :key="index">{{item.taskContent}}
-                  <slot><el-button style="float: right;margin-right: 10px" type="primary" @click="">{{ item.status }}</el-button></slot>
+                  <el-button style="float: right;margin-right: 10px" type="primary" @click="">{{ item.status }}</el-button>
                 </el-form-item>
               </el-form>
             </el-card>
           </el-col>
         </el-row>
-        <el-dialog style="width: 100%" :visible.sync="scheduleDialog" title="每日计划查看">
+        <el-dialog style="width: 100%" :visible.sync="scheduleDialog" title="每日固定计划查看">
           <el-form style="height: 200px;width: 400px">
             <el-form-item v-for="(item,index) in Schedules" :key="index">{{item.taskContent}}</el-form-item>
+            <el-form-item>
+              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click="addSchedule">新增固定计划</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+        <el-dialog :visible.sync="addscheduleDialog" title="添加每日计划">
+          <el-form style="height: 200px;width: 400px">
+            <el-form-item>
+                <span>任务内容：</span><el-input style="max-width: 370px;"></el-input>
+            </el-form-item>
+<!--            <el-form-item>-->
+<!--              <span>任务内容：</span><el-input style="width: 270px"></el-input>-->
+<!--            </el-form-item>-->
+            <el-form-item>
+              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click="">新增</el-button>
+            </el-form-item>
           </el-form>
         </el-dialog>
       </div>
@@ -77,6 +91,7 @@ export default {
       SchedulesTask:[],
       value: '',
       scheduleDialog:false,
+      addscheduleDialog: false,
     }
   },
   methods:{
@@ -91,6 +106,9 @@ export default {
         this.Schedules=response.data;
         console.log(this.Schedules)
       })
+    },
+    addSchedule(){
+      this.addscheduleDialog=!this.addscheduleDialog
     },
     getScheduleTask(){
       API.getSchedule(this.params,this.SchedulesTask).then((resp)=>{
@@ -169,28 +187,22 @@ export default {
   background-color: dodgerblue;
   color: white;
   height: 70px;
-  width: 100%;
-}
-.el-input{
-  width: 80px;
-}
-.selectInput{
-  padding-left: 20px;
-  width: 800px;
-}
-.selectInput2{
-  padding-left: 20px;
-  width: 800px;
-  height: 300px;
 }
 .box-card {
-  width: 500px;
+  min-width: 400px;
   min-height: 200px;
 }
-.el-card:hover{
-  margin-top: -10px;
-}
+/*.el-card:hover{*/
+/*  margin-top: -10px;*/
+/*}*/
 .el-button {
   width: 70px;
+}
+.el-form {
+  height: 200px;
+  width: 350px
+}
+.el-input__inner{
+  width: 40%;
 }
 </style>
