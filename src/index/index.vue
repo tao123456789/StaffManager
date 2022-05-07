@@ -57,20 +57,17 @@
             </el-form>
           </el-card>
         </el-col>
-        <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="6">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 30px">开发中......</span>
-              <el-button style="float: right;width: 150px" type="primary" @click="enterTest">点击进入</el-button>
-            </div>
-            <el-form style="background-image: url('../../static/img/img1.jpg');background-size: cover;height: 200px">
-              <el-form-item label="说明：" ></el-form-item>
-              <el-form-item></el-form-item>
-            </el-form>
-          </el-card>
-        </el-col>
-        </el-row>
+      </el-row>
     </el-container>
+    <div>
+      <el-container style="margin-left: 40px;margin-top: 20px">
+        <el-form>
+          <el-form-item>
+            <a href="#/jsonTool">JSON转换</a>
+          </el-form-item>
+        </el-form>
+      </el-container>
+    </div>
   </div>
 </template>
 
@@ -95,7 +92,7 @@ export default {
       this.$router.push("/demo")
     },
     enterLog(){
-      this.$message.success("开发中！！！")
+      this.$router.push("/log")
     },
   }
 }
@@ -116,6 +113,7 @@ export default {
 .box-card {
   min-width: 400px;
   min-height: 200px;
+  margin-top: 20px;
 }
 .el-form {
    height: 200px;

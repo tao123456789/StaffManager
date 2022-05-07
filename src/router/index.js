@@ -9,6 +9,8 @@ import menuSetting from "../components/mms/setting/menuSetting/index"
 import test from "../components/test"
 import myTools from "../components/myTools/index/index"
 import demo from "../layout/demoLayout/demoLayout"
+import jsonTool from "../components/tools/jsonTool"
+import log from "../components/log/log"
 
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
@@ -64,6 +66,20 @@ export default new Router({
       path:'/myTools',
       name:'myTools',
       component:myTools,
+      children: []
+    },
+    //日志系统的路由
+    {
+      path:'/log',
+      name:'log',
+      component:log,
+      children: []
+    },
+    //index页的其他工具路由
+    {
+      path:'/jsonTool',
+      name:'jsonTool',
+      component:jsonTool,
       children: []
     },
     {

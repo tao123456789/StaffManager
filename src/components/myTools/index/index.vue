@@ -47,6 +47,7 @@
               </div>
               <el-form>
                 <el-form-item v-for="(item,index) in SchedulesTask" :key="index">{{item.taskContent}}
+                  <el-button style="float: right;margin-right: 10px" type="primary" @click="updateScheduleTaskStatus(item.id)">完成</el-button>
                   <el-button style="float: right;margin-right: 10px" type="primary" @click="">{{ item.status }}</el-button>
                 </el-form-item>
               </el-form>
@@ -54,23 +55,27 @@
           </el-col>
         </el-row>
         <el-dialog style="width: 100%" :visible.sync="scheduleDialog" title="每日固定计划查看">
-          <el-form style="height: 200px;width: 400px">
-            <el-form-item v-for="(item,index) in Schedules" :key="index">{{item.taskContent}}</el-form-item>
+          <el-form style="height: auto;width: auto">
+            <el-form-item v-for="(item,index) in Schedules" :key="index">
+              {{item.taskContent}}
+            <el-button style="float: right;margin-right: 10px;width: auto" type="primary" @click="deleteSchedule(item)">删除</el-button>
+            </el-form-item>
             <el-form-item>
-              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click="addSchedule">新增固定计划</el-button>
+              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click=showAddscheduleDialog>新增固定计划</el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
         <el-dialog :visible.sync="addscheduleDialog" title="添加每日计划">
           <el-form style="height: 200px;width: 400px">
             <el-form-item>
-                <span>任务内容：</span><el-input style="max-width: 370px;"></el-input>
+              <span>任务内容：</span>
+              <el-input style="max-width: 370px;" v-model='taskContent' @click="addSchedule()"></el-input>
             </el-form-item>
 <!--            <el-form-item>-->
 <!--              <span>任务内容：</span><el-input style="width: 270px"></el-input>-->
 <!--            </el-form-item>-->
             <el-form-item>
-              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click="">新增</el-button>
+              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click="addSchedule">新增</el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
@@ -89,7 +94,7 @@ export default {
       DiskNetData: [],
       Schedules:[],
       SchedulesTask:[],
-      value: '',
+      taskContent:'请输入您的计划',
       scheduleDialog:false,
       addscheduleDialog: false,
     }
@@ -107,14 +112,60 @@ export default {
         console.log(this.Schedules)
       })
     },
-    addSchedule(){
+    showAddscheduleDialog(){
       this.addscheduleDialog=!this.addscheduleDialog
     },
+    addSchedule(){
+      console.log("任务："+this.taskContent)
+      this.$axios({
+        method:'POST',
+        url:'/api/DailySchedule/addSchedule',
+        data:{
+          taskContent:this.taskContent
+        }
+      }).then(response=>{
+          this.$message.success("新增成功!")
+          this.getSchedule()
+      })
+    },
+    deleteSchedule(item){
+      console.log("任务："+item)
+      // this.$axios({
+      //   method:'POST',
+      //   url:'/api/DailySchedule/addSchedule',
+      //   data:{
+      //     taskContent:this.taskContent
+      //   }
+      // }).then(response=>{
+      //     this.$message.success("新增成功!")
+      //     this.getSchedule()
+      // })
+    },
+    updateScheduleTaskStatus(id){
+      this.$axios({
+        method:'GET',
+        url:'/api/DailySchedule/updateScheduleTaskStatus/'+id,
+        data:{
+          token: this.$store.state.Token.token
+        }
+      }).then(response=>{
+        if(response.data==true){
+          this.$message.success("恭喜你，完成任务!")
+          this.getScheduleTask()
+        }else{
+          this.$message.error("抱歉，更新失败，请重试!")
+        }
+      })
+    },
     getScheduleTask(){
-      API.getSchedule(this.params,this.SchedulesTask).then((resp)=>{
-        console.log(resp.result)
-        console.log(resp.data)
-        this.SchedulesTask=resp.result
+      this.$axios.get('/api/DailySchedule/getScheduleTaskList/1',{
+        headers:{
+          'Content-Type':'application/json',
+          'token':this.$store.state.Token.token
+        }
+      }).then(response=>{
+        this.SchedulesTask=response.data;
+        console.log(this.SchedulesTask)
       })
     },
     download(item){
@@ -168,15 +219,16 @@ export default {
     })
 
 
-    this.$axios.get('/api/DailySchedule/getScheduleTaskList/1',{
-      headers:{
-        'Content-Type':'application/json',
-        'token':this.$store.state.Token.token
-      }
-    }).then(response=>{
-      this.SchedulesTask=response.data;
-      console.log(this.SchedulesTask)
-    })
+    // this.$axios.get('/api/DailySchedule/getScheduleTaskList/1',{
+    //   headers:{
+    //     'Content-Type':'application/json',
+    //     'token':this.$store.state.Token.token
+    //   }
+    // }).then(response=>{
+    //   this.SchedulesTask=response.data;
+    //   console.log(this.SchedulesTask)
+    // })
+    this.getScheduleTask()
   }
 }
 </script>
@@ -191,6 +243,7 @@ export default {
 .box-card {
   min-width: 400px;
   min-height: 200px;
+  margin-top: 20px;
 }
 /*.el-card:hover{*/
 /*  margin-top: -10px;*/
