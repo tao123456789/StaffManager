@@ -19,4 +19,7 @@ export default {
 /*  color: #2c3e50;*/
 /*  margin-top: 60px;*/
 /*}*/
+.el-textarea__inner{
+  height: 90vh;
+}
 </style>

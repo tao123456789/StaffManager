@@ -1,5 +1,11 @@
 <template>
   <div>
+<!--    控制网络连接状态-->
+    <div v-if="mask" class="offline-mask">
+      <h2 class="offline-mask-title"> {{ offlineTitle }} </h2>
+    </div>
+<!--    控制网络连接状态-->
+
     <el-container style="padding-left: 20px;padding-top: 40px;">
       <el-row :gutter="20">
 <!--        xs	<768px 响应式栅格数或者栅格属性对象	用于超小型设备-->
@@ -61,11 +67,9 @@
     </el-container>
     <div>
       <el-container style="margin-left: 40px;margin-top: 20px">
-        <el-form>
-          <el-form-item>
-            <a href="#/jsonTool">JSON转换</a>
-          </el-form-item>
-        </el-form>
+        <el-button type="primary" @click="enterJsonTool1">JSON转换1</el-button>
+        <el-button type="primary" @click="enterJsonTool2">JSON转换2</el-button>
+        <el-button type="primary" @click="netStatus">网络状态</el-button>
       </el-container>
     </div>
   </div>
@@ -74,8 +78,22 @@
 <script>
 export default {
   name: "index",
+  // <!--    控制网络连接状态-->
+  props: {
+    offlineTitle: {
+      type: String,
+      default: '网络已断开，请检查网络'
+    },
+    onlineTitle: {
+      type: String,
+      default: '网络已连接'
+    }
+  },
+
   data(){
     return{
+      // <!--    控制网络连接状态-->
+      mask: false
     }
   },
   methods:{
@@ -94,11 +112,43 @@ export default {
     enterLog(){
       this.$router.push("/log")
     },
-  }
+    enterJsonTool1(){
+      this.$router.push("/jsonTool")
+    },
+    enterJsonTool2(){
+      this.$router.push("/jsonTool2")
+    },
+    netStatus(){
+      this.$router.push("/netStatus")
+    },
+    // <!--    控制网络连接状态-->
+    eventHandler (event) {
+      let { offlineTitle, onlineTitle } = this
+      const type = event.type === 'offline' ? 'error' : 'success'
+      const title = type === 'error' ? offlineTitle : onlineTitle
+      // element 的提示， UI不同这里换下
+      this.$message({
+        message: title,
+        type: type
+      })
+      setTimeout(() => {
+        this.mask = event.type === 'offline'
+      }, 1500)
+    }
+  },
+  // 画面DOM创建时，检查网络情况
+  mounted () {
+    window.addEventListener('offline', this.eventHandler)
+    window.addEventListener('online', this.eventHandler)
+  },
+  beforeDestroy () {
+    window.removeEventListener('offline', this.eventHandler)
+    window.removeEventListener('online', this.eventHandler)
+  },
 }
 </script>
 
-<style scoped>
+<style scoped lang="less">
 .clearfix:before,
 .clearfix:after {
   display: table;
@@ -119,5 +169,24 @@ export default {
    height: 200px;
    width: 450px
  }
+.el-button{
+  width: auto;
+}
+.offline-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  z-index: 999;
+  transition: position 2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+.offline-mask-title {
+  color: rgba(0, 0, 0, .8);
+}
+}
 </style>

@@ -1,30 +1,38 @@
 <template>
-  <div>
-    <el-input type='text' v-model='value'></el-input>
-    <el-input></el-input>
+  <div id="app">
+    <div class="layout">
+      <el-input type="textarea" v-model="json"></el-input>
+        <el-button @click="ggg" type="primary">转换</el-button>
+      <el-input type="textarea" v-model="newjson"/>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "jsonTool",
-  data(){
-    return{
-      value:"默认值"
+  data() {
+    return {
+      json:'',
+      newjson:''
     }
-  }
+  },
+  methods:{
+    ggg(){
+      let temp=JSON.parse(this.json)
+      this.newjson=JSON.stringify(temp,null,4)
+    }
+  },
 }
 </script>
 
-<style scoped>
-.el-input{
-  width: 40%;
-  height: 100vh;
+<style scoped lang="less">
+.el-textarea{
+  width: 40vw;
   margin-top: 20px;
-  margin-left: 5%;
+  margin-left: 20px;
 }
-.el-input__inner{
-   width: 50px;
-  min-height: 500px;
- }
+.el-button{
+  margin-left: 20px;
+  width:auto
+}
 </style>

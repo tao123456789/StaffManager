@@ -11,6 +11,7 @@ import myTools from "../components/myTools/index/index"
 import demo from "../layout/demoLayout/demoLayout"
 import jsonTool from "../components/tools/jsonTool"
 import log from "../components/log/log"
+import netStatus from "../components/netStatus/netStatus"
 
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
@@ -80,6 +81,13 @@ export default new Router({
       path:'/jsonTool',
       name:'jsonTool',
       component:jsonTool,
+      children: []
+    },
+    //网络状态
+    {
+      path:'/netStatus',
+      name:'netStatus',
+      component:netStatus,
       children: []
     },
     {

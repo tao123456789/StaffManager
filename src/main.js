@@ -8,6 +8,7 @@ import 'element-ui/lib/theme-chalk/index.css'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import {store} from './store/index'
+import jsonView from 'vue-json-views'
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios
@@ -33,6 +34,7 @@ router.beforeEach((to,from,next)=>{
 new Vue({
   el: '#app',
   router,
+  jsonView,
   store,
   components: { App },
   template: '<App/>'
