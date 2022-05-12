@@ -16,12 +16,10 @@ Vue.use(VueAxios,axios);
 Vue.use(ElementUI)
 
 router.beforeEach((to,from,next)=>{
-  let token=localStorage.getItem('token')
   if(to.path==='/'){
     return next()
   }else{
-    if(!token){
-      console.log('Token已失效！请重新登录！')
+    if(!store.state.Token.token){
       Message.error('Token已失效！请重新登录！')
       return next('/')
     }else{
