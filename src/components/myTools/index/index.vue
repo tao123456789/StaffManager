@@ -117,12 +117,12 @@
 </template>
 
 <script>
-import * as API from '../../../api/scheduleApi/schedule'
+import {getFileList} from "../../../api/XPHnetDiskApi/XPHnetDiskApi";
 export default {
   name: "homepage",
   data(){
     return{
-      params:[],
+      params:{},
       DiskNetData: [],
       Schedules:[],
       SchedulesTask:[],
@@ -324,31 +324,12 @@ export default {
     }
   },
   beforeMount(){
-    this.$axios.get('/api/XPHnetDisk/getFileList',{
-      headers:{
-        'Content-Type':'application/json',
-        'token':this.$store.state.Token.token,
-      },
-      params:{
-        'url':'/user/data/upload'
-      }
-    }).then(response=>{
-      console.log("获取网盘的目录"+JSON.stringify(response.data))
-      this.DiskNetData=response.data
+    getFileList().then(response=>{
+      console.log("获取网盘的目录"+response)
+      this.DiskNetData=response
     },error=>{
       this.$message.error(error)
     })
-
-
-    // this.$axios.get('/api/DailySchedule/getScheduleTaskList/1',{
-    //   headers:{
-    //     'Content-Type':'application/json',
-    //     'token':this.$store.state.Token.token
-    //   }
-    // }).then(response=>{
-    //   this.SchedulesTask=response.data;
-    //   console.log(this.SchedulesTask)
-    // })
     this.getScheduleTask()
   }
 }

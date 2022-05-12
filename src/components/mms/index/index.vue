@@ -92,7 +92,7 @@ export default {
     }
   },
   beforeMount(){
-    this.$axios.get('/api/menu/getMenu/'+this.$store.state.Token.userID,{
+    this.$axios.get('/api/menu/getMenu',{
       headers:{
         'Content-Type':'application/json',
         'token':this.$store.state.Token.token

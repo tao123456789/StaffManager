@@ -18,7 +18,7 @@ service.interceptors.request.use(
     if (tokenExist) {
       // bus.$emit('toggleloading', true)//显示loading
       //如果token存在
-      config.headers['Authorization'] = `Bearer ${util.getToken()}`;
+      config.headers['Authorization'] = util.getToken();
       config.headers['token'] = `${util.getToken()}`;
     }
     // Toast.loading({

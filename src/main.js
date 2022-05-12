@@ -16,7 +16,7 @@ Vue.use(VueAxios,axios);
 Vue.use(ElementUI)
 
 router.beforeEach((to,from,next)=>{
-  let token=sessionStorage.getItem('token')
+  let token=localStorage.getItem('token')
   if(to.path==='/'){
     return next()
   }else{
