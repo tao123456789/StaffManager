@@ -55,12 +55,16 @@ export default {
             'Content-Type': 'application/json'
           }
         }).then(response => {
-          // 获取token，并存储在store中
+          if(response.data!="false") {
+            // 获取token，并存储在store中
             this.$store.state.Token.token = response.data
             //存储token在sessionStorage，浏览器页面签关闭即删除sessionStorage
             sessionStorage.setItem('token', response.data)
             this.$message.success("登录成功！")
             this.$router.push("/index")
+          }else{
+            this.$message.error("登录失败，请重试！")
+          }
         },
         error=>{
           this.$message.error("登录失败，请重试！")
