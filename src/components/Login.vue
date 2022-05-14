@@ -24,7 +24,7 @@ export default {
     return {
       loginInfo:{
         'userName': 'root',
-        'userPasswd': '123456',
+        'userPasswd': '',
         'ip': '',
         'area': '',
         'brower': '',

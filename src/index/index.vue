@@ -5,60 +5,36 @@
       <h2 class="offline-mask-title"> {{ offlineTitle }} </h2>
     </div>
 <!--    控制网络连接状态-->
-
+<!--    顶部导航栏-->
+<!--    <el-menu-->
+<!--      :default-active="$route.path"-->
+<!--      class="el-menu-demo"-->
+<!--      mode="horizontal"-->
+<!--      @select="handleSelect"-->
+<!--      background-color="#fff"-->
+<!--      text-color="#909399"-->
+<!--      active-text-color="#409EFF"-->
+<!--      router>-->
+<!--      <el-menu-item index="/index">首页</el-menu-item>-->
+<!--      <el-menu-item index="2" v-for="(item,index) in moduleList" :key="index">-->
+<!--        <template slot="title" >{{item.module_name}}</template>-->
+<!--      </el-menu-item>-->
+<!--    </el-menu>-->
     <el-container style="padding-left: 20px;padding-top: 40px;">
-      <el-row :gutter="20">
+      <el-row :gutter="24">
 <!--        xs	<768px 响应式栅格数或者栅格属性对象	用于超小型设备-->
 <!--        sm	≥768px 响应式栅格数或者栅格属性对象	用于小屏设备-->
 <!--        md	≥992px 响应式栅格数或者栅格属性对象	用于中屏设备-->
 <!--        lg	≥1200px 响应式栅格数或者栅格属性对象	用于大屏设备-->
 <!--        xl	≥1920px 响应式栅格数或者栅格属性对象	用于超大屏设备-->
-        <el-col :xs="24" :sm="24" :md="24" :lg="7" :xl="6">
+        <el-col :xs="20" :sm="19" :md="18" :lg="7" :xl="5.5" v-for="(item,index) in moduleList" :key="index">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
-              <span style="font-size: 30px">个人应用系统</span>
-              <el-button style="float: right;width: 150px" type="primary" @click="enterMyTools">点击进入</el-button>
+              <span style="font-size: 30px;">{{item.module_name}}</span>
+              <el-button style="float: right;width: 150px" type="primary" @click="enter(index)">点击进入</el-button>
             </div>
-            <el-form style="background-image: url('../../static/img/img3.jpg');background-size: cover;height: 200px">
-              <el-form-item label="说明：" ></el-form-item>
-              <el-form-item style="width: 200px">用于个人应用开发，包括常用的地址记录，个人的网盘的功能等</el-form-item>
-              <el-form-item></el-form-item>
-            </el-form>
-          </el-card>
-        </el-col>
-        <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="6">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 30px">后台管理系统</span>
-              <el-button style="float: right;width: 150px" type="primary" @click="enterMMS">点击进入</el-button>
-            </div>
-            <el-form style="background-image: url('../../static/img/img2.png');background-size: cover;height: 200px">
-              <el-form-item label="说明：" ></el-form-item>
-              <el-form-item style="width: 200px">对物料信息进行管理的一个系统，功能暂未完全实现，慢慢做，不着急</el-form-item>
-            </el-form>
-          </el-card>
-        </el-col>
-        <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="6">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 30px">日志系统</span>
-              <el-button style="float: right;width: 150px" type="primary" @click="enterLog">点击进入</el-button>
-            </div>
-            <el-form style="background-image: url('../../static/img/img5.jpg');background-size: cover;height: 200px">
-              <el-form-item label="说明：" ></el-form-item>
-              <el-form-item style="width: 200px">用于查看所有日志的系统入口，暂未实现，目标是将该系统的日志文件都纳入管理</el-form-item>
-            </el-form>
-          </el-card>
-        </el-col>
-        <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="6">
-          <el-card class="box-card">
-            <div slot="header" class="clearfix">
-              <span style="font-size: 30px">前端组件Demo库</span>
-              <el-button style="float: right;width: 150px" type="primary" @click="enterDemo">点击进入</el-button>
-            </div>
-            <el-form style="background-image: url('../../static/img/img4.png');background-size: cover;height: 200px">
-              <el-form-item label="说明：" ></el-form-item>
-              <el-form-item>用于记录前端的组件应用</el-form-item>
+            <el-form :style="{backgroundImage:(moduleList[0].img_url)}">
+              <el-form-item style="width: 200px">{{item.description}}</el-form-item>
               <el-form-item></el-form-item>
             </el-form>
           </el-card>
@@ -67,7 +43,7 @@
     </el-container>
     <div>
       <el-container style="margin-left: 40px;margin-top: 20px">
-        <el-button type="primary" @click="enterJsonTool1">JSON转换1</el-button>
+        <el-button type="primary" @click="">JSON转换1</el-button>
         <el-button type="primary" @click="enterJsonTool2">JSON转换2</el-button>
         <el-button type="primary" @click="netStatus">网络状态</el-button>
       </el-container>
@@ -76,6 +52,7 @@
 </template>
 
 <script>
+import {getModuleList} from "../api/UserApi/User"
 export default {
   name: "index",
   // <!--    控制网络连接状态-->
@@ -93,24 +70,24 @@ export default {
   data(){
     return{
       // <!--    控制网络连接状态-->
-      mask: false
+      mask: false,
+      moduleList:{},
+
     }
   },
   methods:{
-    enterMMS(){
-      this.$router.push("/MMS")
+    getModuleList(){
+      getModuleList().then(response=>{
+        console.log(response)
+        this.moduleList=response
+      })
     },
-    enterTest(){
-      this.$message.success("开发中！！！")
+    handleSelect(){
+
     },
-    enterMyTools(){
-      this.$router.push("/myTools")
-    },
-    enterDemo(){
-      this.$router.push("/demo")
-    },
-    enterLog(){
-      this.$router.push("/log")
+    enter(index){
+      let url=this.moduleList[index].module_url
+      this.$router.push(url)
     },
     enterJsonTool1(){
       this.$router.push("/jsonTool")
@@ -136,10 +113,12 @@ export default {
       }, 1500)
     }
   },
-  // 画面DOM创建时，检查网络情况
+  // 画面DOM创建时
   mounted () {
+    //检查网络情况
     window.addEventListener('offline', this.eventHandler)
     window.addEventListener('online', this.eventHandler)
+    this.getModuleList()
   },
   beforeDestroy () {
     window.removeEventListener('offline', this.eventHandler)
