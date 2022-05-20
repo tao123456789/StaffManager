@@ -27,7 +27,14 @@
       <el-button type="primary" style="width: 80px;height: 40px" @click="test()">修改</el-button>
     </el-table-column>
   </el-table>
-
+  <el-paginnation
+    :current-page="page"
+    :page-size="limit"
+    :total="total"
+    style="padding: 30px 0; text-align: center;"
+    layout="total, prev, pager, next, jumper"
+    @current-change="getList">
+  </el-paginnation>
 <!--  上传文件-->
   <el-dialog
     title="上传文件"
@@ -69,6 +76,12 @@ export default {
   name: 'allMaterial',
   data(){
     return{
+      current: 1, // 当前页
+      limit: 3, // 每页显示记录数
+      searchObj: {}, // 条件封装对象
+      list: [], // 没页数据集合
+      total: 0, // 总记录数
+
       info:'',
       materialListTemp:[],
       materialList:[],
@@ -112,6 +125,12 @@ export default {
       this.selectedList=[]
     },
 
+    // 定义方法，进行请求接口调用
+    // 医院列表
+    getList(page = 1) {
+      // 添加当前页参数
+      this.current = page;
+    },
     addMaterial(){
 
     },
@@ -207,6 +226,7 @@ export default {
       this.materialListTemp=response.data;
       console.log(this.materialList)
     })
+      this.getList();
   }
 }
 </script>

@@ -1,5 +1,11 @@
 import http from "../../common/http.js";
 
-export function getSchedule(url,params,data) {
-  return http.get('/api/getSchedule',data)
+export function getSchedule(params) {
+  return http.get('/api/DailySchedule/getScheduleList',params)
+}
+export function getScheduleTask(params) {
+  return http.get('/api/DailySchedule/getScheduleTaskList',params)
+}
+export function addSchedule(params) {
+  return http.post('/api/DailySchedule/addSchedule',params)
 }

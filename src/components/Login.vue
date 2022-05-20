@@ -9,6 +9,8 @@
         <el-input v-model="loginInfo.userPasswd" clearable show-password placeholder="密码"></el-input>
         <div class="content_button">
           <el-button type="primary" @click="SignIn">登录</el-button>
+          <el-link type="primary" :href="href">注册</el-link>&nbsp;&nbsp;
+          <el-link type="primary" :href="href">找回密码</el-link>
         </div>
       </div>
     </div>
@@ -22,6 +24,7 @@ export default {
   name: 'Login',
   data() {
     return {
+      href:'',
       loginInfo:{
         'userName': 'root',
         'userPasswd': '',

@@ -1,25 +1,25 @@
 <template>
   <div>
+    <!--    顶部导航栏-->
+    <el-menu
+      :default-active="$route.path"
+      class="el-menu-demo"
+      mode="horizontal"
+      @select="handleSelect"
+      background-color="#46A3FF"
+      text-color="#FFF"
+      active-text-color="#409EFF"
+      router>
+      <el-menu-item index="/index" style="font-size: medium">首页</el-menu-item>
+      <!--    <el-menu-item index="2" v-for="(item,index) in moduleList" :key="index">-->
+      <!--      <template slot="title" >{{item.module_name}}</template>-->
+      <!--    </el-menu-item>-->
+    </el-menu>
 <!--    控制网络连接状态-->
     <div v-if="mask" class="offline-mask">
       <h2 class="offline-mask-title"> {{ offlineTitle }} </h2>
     </div>
 <!--    控制网络连接状态-->
-<!--    顶部导航栏-->
-<!--    <el-menu-->
-<!--      :default-active="$route.path"-->
-<!--      class="el-menu-demo"-->
-<!--      mode="horizontal"-->
-<!--      @select="handleSelect"-->
-<!--      background-color="#fff"-->
-<!--      text-color="#909399"-->
-<!--      active-text-color="#409EFF"-->
-<!--      router>-->
-<!--      <el-menu-item index="/index">首页</el-menu-item>-->
-<!--      <el-menu-item index="2" v-for="(item,index) in moduleList" :key="index">-->
-<!--        <template slot="title" >{{item.module_name}}</template>-->
-<!--      </el-menu-item>-->
-<!--    </el-menu>-->
     <el-container style="padding-left: 20px;padding-top: 40px;">
       <el-row :gutter="24">
 <!--        xs	<768px 响应式栅格数或者栅格属性对象	用于超小型设备-->
@@ -43,7 +43,7 @@
     </el-container>
     <div>
       <el-container style="margin-left: 40px;margin-top: 20px">
-        <el-button type="primary" @click="">JSON转换1</el-button>
+        <el-button type="primary" @click="enterJsonTool1">JSON转换1</el-button>
         <el-button type="primary" @click="enterJsonTool2">JSON转换2</el-button>
         <el-button type="primary" @click="netStatus">网络状态</el-button>
       </el-container>
@@ -118,6 +118,8 @@ export default {
     //检查网络情况
     window.addEventListener('offline', this.eventHandler)
     window.addEventListener('online', this.eventHandler)
+  },
+  created() {
     this.getModuleList()
   },
   beforeDestroy () {

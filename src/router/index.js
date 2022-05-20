@@ -10,10 +10,9 @@ import test from "../components/test"
 import myTools from "../components/myTools/index/index"
 import demo from "../layout/demoLayout/demoLayout"
 import jsonTool from "../components/tools/jsonTool"
-import logger from "../components/log/log"
-import netStatus from "../components/netStatus/netStatus"
-import controller from "../components/netStatus/netStatus"
+import netStatus from "../components/controller/netStatus/netStatus"
 
+import controller from "../router/controller/index"
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = Router.prototype.push
@@ -30,6 +29,7 @@ export default new Router({
       name: 'Login',
       component: Login
     },
+    ...controller,
     {
       path: '/index',
       name: 'index',
@@ -70,20 +70,8 @@ export default new Router({
       component:myTools,
       children: []
     },
-    //日志系统的路由
-    {
-      path:'/logger',
-      name:'logger',
-      component:logger,
-      children: []
-    },
     //权限路由
-    {
-      path:'/controller',
-      name:'controller',
-      component:controller,
-      children: []
-    },
+    // controller,
     //index页的其他工具路由
     {
       path:'/jsonTool',

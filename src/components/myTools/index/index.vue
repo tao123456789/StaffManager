@@ -1,19 +1,29 @@
 <template xmlns="http://www.w3.org/1999/html">
   <div id="homepage">
-    <el-container>
-      <!--  顶栏-->
-      <el-header>
-          <h1 style="height:60px;font-size: 35px;padding-top: 10px;">个人应用</h1>
-<!--          <el-input style="height:60px;width: 300px;padding-top: 17px;padding-left: 30%" placeholder="请输入内容"></el-input>-->
-      </el-header>
+    <!--    顶部导航栏-->
+    <el-menu
+      :default-active="$route.path"
+      class="el-menu-demo"
+      mode="horizontal"
+      @select="handleSelect"
+      background-color="#46A3FF"
+      text-color="#FFF"
+      active-text-color="#409EFF"
+      router>
+      <el-menu-item index="/index" style="font-size: medium">首页</el-menu-item>
+      <!--    <el-menu-item index="2" v-for="(item,index) in moduleList" :key="index">-->
+      <!--      <template slot="title" >{{item.module_name}}</template>-->
+      <!--    </el-menu-item>-->
+    </el-menu>
+    <el-container style="width: auto">
       <div style="padding-right: 10px;padding-top: 20px;padding-left: 10px">
-        <el-row :gutter="20">
+        <el-row :gutter="24">
           <!--        xs	<768px 响应式栅格数或者栅格属性对象	用于超小型设备-->
           <!--        sm	≥768px 响应式栅格数或者栅格属性对象	用于小屏设备-->
           <!--        md	≥992px 响应式栅格数或者栅格属性对象	用于中屏设备-->
           <!--        lg	≥1200px 响应式栅格数或者栅格属性对象	用于大屏设备-->
           <!--        xl	≥1920px 响应式栅格数或者栅格属性对象	用于超大屏设备-->
-          <el-col :xs="24" :sm="24" :md="10" :lg="7" :xl="7">
+          <el-col :xs="24" :sm="24" :md="11" :lg="9" :xl="8">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">常用网站</span>
@@ -26,21 +36,22 @@
               </el-form>
             </el-card>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="10" :lg="7" :xl="7">
+          <el-col :xs="24" :sm="24" :md="11" :lg="9" :xl="9">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">个人网盘文件</span>
                 <el-button style="float: right;margin-right: 10px;width: 140px" type="primary" @click="upload" plain>上传文件</el-button>
               </div>
               <el-form>
-                <el-form-item v-for="(item,index) in DiskNetData" :key="index">{{item}}
+                <el-form-item v-for="(item,index) in DiskNetData" :key="index">
+                  {{item}}
                   <el-button style="float: right;margin-right: 10px" type="danger">删除</el-button>
                   <el-button style="float: right;margin-right: 10px" type="primary" @click="download(item)">下载</el-button>
                 </el-form-item>
               </el-form>
             </el-card>
           </el-col>
-          <el-col :xs="24" :sm="26" :md="24" :lg="7" :xl="7">
+          <el-col :xs="24" :sm="24" :md="11" :lg="9" :xl="6">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">每日计划</span>
@@ -118,6 +129,7 @@
 
 <script>
 import {getFileList} from "../../../api/XPHnetDiskApi/XPHnetDiskApi";
+import {addSchedule, getSchedule, getScheduleTask} from "../../../api/scheduleApi/schedule"
 export default {
   name: "homepage",
   data(){
@@ -223,13 +235,8 @@ export default {
 
     getSchedule(){
       this.scheduleDialog=!this.scheduleDialog
-      this.$axios.get('/api/DailySchedule/getScheduleList/1',{
-        headers:{
-          'Content-Type':'application/json',
-          'token':this.$store.state.Token.token
-        }
-      }).then(response=>{
-        this.Schedules=response.data;
+      getSchedule().then(response=>{
+        this.Schedules=response;
         console.log(this.Schedules)
       })
     },
@@ -237,14 +244,8 @@ export default {
       this.addscheduleDialog=!this.addscheduleDialog
     },
     addSchedule(){
-      console.log("任务："+this.taskContent)
-      this.$axios({
-        method:'POST',
-        url:'/api/DailySchedule/addSchedule',
-        data:{
-          taskContent:this.taskContent
-        }
-      }).then(response=>{
+      this.params.taskContent=this.taskContent
+      addSchedule(this.params).then(response=>{
           this.$message.success("新增成功!")
           this.getSchedule()
       })
@@ -276,17 +277,6 @@ export default {
         }else{
           this.$message.error("抱歉，更新失败，请重试!")
         }
-      })
-    },
-    getScheduleTask(){
-      this.$axios.get('/api/DailySchedule/getScheduleTaskList/1',{
-        headers:{
-          'Content-Type':'application/json',
-          'token':this.$store.state.Token.token
-        }
-      }).then(response=>{
-        this.SchedulesTask=response.data;
-        console.log(this.SchedulesTask)
       })
     },
     download(item){
@@ -330,18 +320,15 @@ export default {
     },error=>{
       this.$message.error(error)
     })
-    this.getScheduleTask()
+    getScheduleTask().then(response=>{
+      this.SchedulesTask=response;
+      console.log(this.SchedulesTask)
+    })
   }
 }
 </script>
 
 <style scoped>
-/*顶部样式*/
-.el-header{
-  background-color: dodgerblue;
-  color: white;
-  height: 70px;
-}
 .box-card {
   min-width: 400px;
   min-height: 200px;
@@ -359,5 +346,11 @@ export default {
 }
 .el-input__inner{
   width: 40%;
+}
+.el-form{
+  width: auto;
+}
+.el-form-item{
+  width: auto;
 }
 </style>

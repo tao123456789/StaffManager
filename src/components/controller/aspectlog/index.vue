@@ -1,12 +1,10 @@
 <template>
-  <div>
-    开发中！！！
-  </div>
+  <div>www</div>
 </template>
 
 <script>
 export default {
-  name: "inde"
+  name: "AspectLog"
 }
 </script>
 
