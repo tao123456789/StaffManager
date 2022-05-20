@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-button type="primary" @click="getLog"></el-button>
+    <el-button type="primary" @click="getLog">获取日志</el-button>
     <el-input v-model="log" type="textarea"></el-input>
   </div>
 </template>

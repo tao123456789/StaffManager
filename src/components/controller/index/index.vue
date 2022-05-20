@@ -83,7 +83,7 @@ export default {
         url: "/controller",
         children: [{
           name: "账号管理",
-          url: '/logger',
+          url: '/allUser',
         }]
       },
         {
@@ -92,8 +92,12 @@ export default {
           url: "/",
           children: [
             {
-              name: "日志管理",
+              name: "AOP切面日志",
               url: '/AspectLog',
+            },
+            {
+              name: "控制台日志",
+              url: '/logger',
             }
           ]
         },
@@ -103,7 +107,7 @@ export default {
           url: "/",
           children: [
             {
-              name: "网络合同",
+              name: "网络状态",
               url: '/netStatus',
             }
           ]
