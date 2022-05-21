@@ -122,6 +122,9 @@ export default {
       this.show = true
       this.$router.push(value.url)
       // this.$store.commit('mutationSelectTags', value)
+    },
+    handleSelect(){
+
     }
   }
 }
