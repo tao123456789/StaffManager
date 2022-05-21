@@ -9,3 +9,11 @@ export function getAspectLogCount(params) {
 export function getAspectLogInfoByUuid(params) {
   return http.get('/api/logger/getAspectLogInfoByUuid',params)
 }
+export function getSubscriberList(params) {
+  return http.get('/api/logger/getSubscriberList',params)
+}
+export function changeStatus(params) {
+  return http.get('/api/logger/changeStatus',params)
+}
+
+

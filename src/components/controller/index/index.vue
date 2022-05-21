@@ -81,10 +81,16 @@ export default {
         icon: 'el-icon-postcard',
         name: '账号管理',
         url: "/controller",
-        children: [{
+        children: [
+          {
           name: "账号管理",
           url: '/allUser',
-        }]
+          },
+          {
+            name: "权限管理",
+            url: '/Auth',
+          }
+        ]
       },
         {
           icon: 'el-icon-tickets',
