@@ -8,9 +8,10 @@
       @select="handleSelect"
       background-color="#46A3FF"
       text-color="#FFF"
-      active-text-color="#409EFF"
+      active-text-color="#FFF"
       router>
       <el-menu-item index="/index" style="font-size: medium">首页</el-menu-item>
+      <el-menu-item index="/" style="font-size: medium">退出</el-menu-item>
 <!--      <el-menu-item index="2" v-for="(item,index) in moduleList" :key="index">-->
 <!--        <template slot="title">{{item.module_name}}</template>-->
 <!--      </el-menu-item>-->
@@ -137,9 +138,4 @@ export default {
 </script>
 
 <style scoped>
-.el-aside{
-  max-width: 200px;
-  height: 100vh;
-  background-color: #D2E9FF
-}
 </style>

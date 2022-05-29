@@ -8,17 +8,14 @@
       @select="handleSelect"
       background-color="#46A3FF"
       text-color="#FFF"
-      active-text-color="#409EFF"
+      active-text-color="#FFF"
       router>
       <el-menu-item index="/index" style="font-size: medium">首页</el-menu-item>
+      <el-menu-item index="/" style="font-size: medium">退出</el-menu-item>
       <!--    <el-menu-item index="2" v-for="(item,index) in moduleList" :key="index">-->
       <!--      <template slot="title" >{{item.module_name}}</template>-->
       <!--    </el-menu-item>-->
     </el-menu>
-<!--    控制网络连接状态-->
-    <div v-if="mask" class="offline-mask">
-      <h2 class="offline-mask-title"> {{ offlineTitle }} </h2>
-    </div>
 <!--    控制网络连接状态-->
     <el-container style="padding-left: 20px;padding-top: 40px;">
       <el-row :gutter="24">
@@ -98,49 +95,19 @@ export default {
     netStatus(){
       this.$router.push("/netStatus")
     },
-    // <!--    控制网络连接状态-->
-    eventHandler (event) {
-      let { offlineTitle, onlineTitle } = this
-      const type = event.type === 'offline' ? 'error' : 'success'
-      const title = type === 'error' ? offlineTitle : onlineTitle
-      // element 的提示， UI不同这里换下
-      this.$message({
-        message: title,
-        type: type
-      })
-      setTimeout(() => {
-        this.mask = event.type === 'offline'
-      }, 1500)
-    }
   },
   // 画面DOM创建时
   mounted () {
-    //检查网络情况
-    window.addEventListener('offline', this.eventHandler)
-    window.addEventListener('online', this.eventHandler)
   },
   created() {
     this.getModuleList()
   },
   beforeDestroy () {
-    window.removeEventListener('offline', this.eventHandler)
-    window.removeEventListener('online', this.eventHandler)
   },
 }
 </script>
 
 <style scoped lang="less">
-.clearfix:before,
-.clearfix:after {
-  display: table;
-  content: "";
-}
-.clearfix:after {
-  clear: both
-}
-/*.el-card:hover{*/
-/*  margin-top: -10px;*/
-/*}*/
 .box-card {
   min-width: 400px;
   min-height: 200px;
@@ -153,21 +120,7 @@ export default {
 .el-button{
   width: auto;
 }
-.offline-mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  z-index: 999;
-  transition: position 2s;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-.offline-mask-title {
-  color: rgba(0, 0, 0, .8);
-}
+.el-menu{
+  width: 100%;
 }
 </style>

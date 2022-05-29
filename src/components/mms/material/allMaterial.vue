@@ -144,7 +144,7 @@ export default {
       let formData = new FormData()
       formData.append('file', this.form.file)
       console.log("上传的文件："+formData)
-      this.$axios.post('/api/material/uploadFile',
+      this.$axios.post('/api/XPHnetDisk/uploadFile',
         formData,
         {
           headers:{'Content-Type': 'multipart/form-data' }

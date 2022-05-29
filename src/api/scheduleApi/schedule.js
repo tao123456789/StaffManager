@@ -9,3 +9,9 @@ export function getScheduleTask(params) {
 export function addSchedule(params) {
   return http.post('/api/DailySchedule/addSchedule',params)
 }
+export function deleteSchedule(params) {
+  return http.get('/api/DailySchedule/deleteSchedule',params)
+}
+export function deleteScheduleTask(params) {
+  return http.get('/api/DailySchedule/deleteScheduleTask',params)
+}

@@ -23,46 +23,72 @@
           <!--        md	≥992px 响应式栅格数或者栅格属性对象	用于中屏设备-->
           <!--        lg	≥1200px 响应式栅格数或者栅格属性对象	用于大屏设备-->
           <!--        xl	≥1920px 响应式栅格数或者栅格属性对象	用于超大屏设备-->
-          <el-col :xs="24" :sm="24" :md="11" :lg="9" :xl="8">
+          <el-col :xs="18" :sm="17" :md="24" :lg="9" :xl="8">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">常用网站</span>
               </div>
               <el-form>
-                <el-form-item>个人GIT地址：  <a href="https://github.com/tao123456789" target="_blank">https://github.com/tao123456789</a></el-form-item>
-                <el-form-item>微信公众号平台：  <a href="https://mp.weixin.qq.com/cgi-bin/home" target="_blank">https://mp.weixin.qq.com/cgi-bin/home</a></el-form-item>
-                <el-form-item>B站首页：  <a href="https://www.bilibili.com/" target="_blank">https://www.bilibili.com/</a></el-form-item>
-                <el-form-item>虎牙直播：  <a href="https://www.huya.com/l" target="_blank">https://www.huya.com/l</a></el-form-item>
+                <el-form-item>个人GIT地址： <a href="https://github.com/tao123456789" target="_blank">https://github.com/tao123456789</a>
+                </el-form-item>
+                <el-form-item>微信公众号平台： <a href="https://mp.weixin.qq.com/cgi-bin/home" target="_blank">https://mp.weixin.qq.com/cgi-bin/home</a>
+                </el-form-item>
+                <el-form-item>B站首页： <a href="https://www.bilibili.com/" target="_blank">https://www.bilibili.com/</a>
+                </el-form-item>
+                <el-form-item>虎牙直播： <a href="https://www.huya.com/l" target="_blank">https://www.huya.com/l</a>
+                </el-form-item>
               </el-form>
             </el-card>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="11" :lg="9" :xl="9">
+          <el-col :xs="18" :sm="17" :md="24" :lg="9" :xl="8">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">个人网盘文件</span>
-                <el-button style="float: right;margin-right: 10px;width: 140px" type="primary" @click="upload" plain>上传文件</el-button>
               </div>
-              <el-form>
-                <el-form-item v-for="(item,index) in DiskNetData" :key="index">
-                  {{item}}
-                  <el-button style="float: right;margin-right: 10px" type="danger">删除</el-button>
-                  <el-button style="float: right;margin-right: 10px" type="primary" @click="download(item)">下载</el-button>
-                </el-form-item>
+              <el-form style="height: auto;width: auto">
+                <el-button style="width: auto" type="primary" @click="goPath(backPath)" plain>上一级</el-button>
+                <el-button style="margin-right: 10px;width: auto" type="primary" @click="showFileDialog" plain>新增文件夹</el-button>
+                <el-button style="margin-right: 10px;width: auto" type="primary" @click="upload" plain>上传文件</el-button>
               </el-form>
+              <span>当前路径：</span>{{this.currentPath==""?"根目录":this.currentPath}}
+              <el-table :data="DiskNetData" border stripe>
+                <el-table-column label="文件ID" prop="F_id"></el-table-column>
+                <el-table-column label="文件名称" prop="F_namesvr"></el-table-column>
+                <el-table-column label="类型" prop="F_fdTask">
+                  <template slot-scope="scope">
+                    <span>{{scope.row.F_fdTask ? "文件" : "路径"}}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column label="操作" prop="">
+                  <template slot-scope="scope">
+                    <el-button type="primary" style="float: left" @click="goPath(currentPath+'/'+scope.row.F_namesvr)"
+                               v-show="!scope.row.F_fdTask">进入
+                    </el-button>
+                    <el-button type="success" style="float: left" @click="download(scope.row.F_id,scope.row.F_namesvr)"
+                               v-show="scope.row.F_fdTask">下载
+                    </el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
             </el-card>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="11" :lg="9" :xl="6">
+          <el-col :xs="18" :sm="17" :md="24" :lg="9" :xl="8">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">每日计划</span>
-                <el-button style="float: right;margin-right: 10px;width: 140px" type="primary" @click="getSchedule">每日固定计划</el-button>
+                <el-button style="float: right;margin-right: 10px;width: 140px" type="primary" @click="getSchedule">
+                  每日固定计划
+                </el-button>
               </div>
-              <el-form>
-                <el-form-item v-for="(item,index) in SchedulesTask" :key="index">{{item.taskContent}}
-                  <el-button style="float: right;margin-right: 10px" type="primary" @click="updateScheduleTaskStatus(item.id)">完成</el-button>
-                  <el-button style="float: right;margin-right: 10px" type="primary" @click="">{{ item.status }}</el-button>
-                </el-form-item>
-              </el-form>
+              <el-table :data="SchedulesTask" border stripe>
+                <el-table-column label="任务内容" prop="taskContent" width="160px"></el-table-column>
+                <el-table-column label="操作">
+                  <template slot-scope="scope">
+                    <el-button style="float: right;margin-right: 10px" type="primary" @click="deleteScheduleTaskStatus(scope.row.id)">删除</el-button>
+                    <el-button style="float: right;margin-right: 10px" type="primary" @click="updateScheduleTaskStatus(scope.row.id)">{{scope.row.status==0?"完成":"已完成"}}</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
             </el-card>
           </el-col>
         </el-row>
@@ -70,10 +96,14 @@
           <el-form style="height: auto;width: auto">
             <el-form-item v-for="(item,index) in Schedules" :key="index">
               {{item.taskContent}}
-            <el-button style="float: right;margin-right: 10px;width: auto" type="primary" @click="deleteSchedule(item)">删除</el-button>
+              <el-button style="float: right;margin-right: 10px;width: auto" type="primary"
+                         @click="deleteSchedule(item.id)">删除
+              </el-button>
             </el-form-item>
             <el-form-item>
-              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click=showAddscheduleDialog>新增固定计划</el-button>
+              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary"
+                         @click=showAddscheduleDialog>新增固定计划
+              </el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
@@ -83,11 +113,22 @@
               <span>任务内容：</span>
               <el-input style="max-width: 370px;" v-model='taskContent' @click="addSchedule()"></el-input>
             </el-form-item>
-<!--            <el-form-item>-->
-<!--              <span>任务内容：</span><el-input style="width: 270px"></el-input>-->
-<!--            </el-form-item>-->
             <el-form-item>
-              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click="addSchedule">新增</el-button>
+              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click="addSchedule">新增
+              </el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
+        <el-dialog :visible.sync="addFileDialog" title="新增文件夹">
+          <el-form style="height: 200px;width: 400px">
+            <el-form-item>
+              <span>文件名称：</span>
+              <el-input style="max-width: 370px;" v-model='addFileName' @click="addSchedule()"></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary"
+                         @click="addFile(addFileName)">新增
+              </el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
@@ -120,7 +161,7 @@
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="uploadFile">立即上传</el-button>
-          <el-button >取消</el-button>
+          <el-button>取消</el-button>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -128,50 +169,56 @@
 </template>
 
 <script>
-import {getFileList} from "../../../api/XPHnetDiskApi/XPHnetDiskApi";
-import {addSchedule, getSchedule, getScheduleTask} from "../../../api/scheduleApi/schedule"
+import {addFilePath, download, getFileList, uploadFile} from "../../../api/XPHnetDiskApi/XPHnetDiskApi";
+import {
+  addSchedule,
+  deleteSchedule,
+  deleteScheduleTask,
+  getSchedule,
+  getScheduleTask
+} from "../../../api/scheduleApi/schedule"
+
 export default {
   name: "homepage",
-  data(){
-    return{
-      params:{},
+  data() {
+    return {
+      params: {},
+      params2: {},
       DiskNetData: [],
-      Schedules:[],
-      SchedulesTask:[],
-      taskContent:'请输入您的计划',
-      scheduleDialog:false,
+      Schedules: [],
+      SchedulesTask: [],
+      taskContent: '请输入您的计划',
+      scheduleDialog: false,
       addscheduleDialog: false,
+      addFileName: "",
+      addFileDialog: false,
       uploadShow: false,
-      selectedList:[],
+      selectedList: [],
       //上传文件参数
       limitNum: 1,
       formLabelWidth: '80px',
       form: {
         file: ''
       },
-      fileList: []
+      fileList: [],
+      backPath: "",
+      currentPath: ""
     }
   },
-  methods:{
+  methods: {
     // 上传文件
-    upload(){
-      this.uploadShow=true
+    upload() {
+      this.uploadShow = true
     },
     uploadFile() {
-      // this.$refs.uploadExcel.submit()
       let formData = new FormData()
       formData.append('file', this.form.file)
-      console.log("上传的文件："+formData)
-      this.$axios.post('/api/material/uploadFile',
-        formData,
-        {
-          headers:{'Content-Type': 'multipart/form-data' }
-        }
-      )
-        .then(res => {
-          console.log(res)
-          this.$message.success(this.form.file.name+res.data)
-        })
+      formData.append('url', this.currentPath)
+      console.log("上传的文件：" + this.form.file)
+      uploadFile(formData).then(res => {
+        console.log(res)
+        this.$message.success(this.form.file.name + res.data)
+      })
         .catch(err => {
 
         })
@@ -195,20 +242,23 @@ export default {
     beforeUploadFile(file) {
       console.log('before upload')
       console.log(file)
-      let extension = file.name.substring(file.name.lastIndexOf('.')+1)
+      let extension = file.name.substring(file.name.lastIndexOf('.') + 1)
       let size = file.size / 1024 / 1024
-      if(extension !== 'xlsx') {
+      if (extension !== 'xlsx') {
         this.$notify.warning({
           title: '警告',
           message: `只能上传Excel2017（即后缀是.xlsx）的文件`
         });
       }
-      if(size > 10) {
+      if (size > 10) {
         this.$notify.warning({
           title: '警告',
           message: `文件大小不得超过10M`
         });
       }
+    },
+    handleSelect() {
+
     },
     // 文件上传成功时的钩子
     handleSuccess(res, file, fileList) {
@@ -228,100 +278,113 @@ export default {
       this.$confirm('确认关闭？')
         .then(_ => {
           done();
-          this.uploadShow=false
+          this.uploadShow = false
         })
-        .catch(_ => {});
+        .catch(_ => {
+        });
     },
 
-    getSchedule(){
-      this.scheduleDialog=!this.scheduleDialog
-      getSchedule().then(response=>{
-        this.Schedules=response;
+    //网盘方法
+    showFileDialog() {
+      this.addFileDialog = !this.addFileDialog
+    },
+    addFile(name) {
+      this.params2.currentPath = this.currentPath
+      this.params2.name = name
+      addFilePath(this.params2).then(response => {
+        console.log(response)
+        this.$message.success("新增成功!")
+      })
+    },
+    goPath(F_namesvr) {
+      this.params.url = F_namesvr
+      getFileList(this.params).then(response => {
+          console.log("获取网盘的目录" + response)
+          this.DiskNetData = response
+          this.backPath = this.currentPath
+          this.currentPath = F_namesvr
+        }, error => {
+          this.$message.error("路径下无文件！！")
+        },
+      )
+    },
+    getSchedule() {
+      this.scheduleDialog = !this.scheduleDialog
+      getSchedule().then(response => {
+        this.Schedules = response;
         console.log(this.Schedules)
       })
     },
-    showAddscheduleDialog(){
-      this.addscheduleDialog=!this.addscheduleDialog
+    showAddscheduleDialog() {
+      this.addscheduleDialog = !this.addscheduleDialog
     },
-    addSchedule(){
-      this.params.taskContent=this.taskContent
-      addSchedule(this.params).then(response=>{
-          this.$message.success("新增成功!")
-          this.getSchedule()
+    addSchedule() {
+      this.params.taskContent = this.taskContent
+      addSchedule(this.params).then(response => {
+        this.$message.success("新增成功!")
+        this.getSchedule()
       })
     },
-    deleteSchedule(item){
-      console.log("任务："+item)
-      // this.$axios({
-      //   method:'POST',
-      //   url:'/api/DailySchedule/addSchedule',
-      //   data:{
-      //     taskContent:this.taskContent
-      //   }
-      // }).then(response=>{
-      //     this.$message.success("新增成功!")
-      //     this.getSchedule()
-      // })
+    deleteSchedule(id) {
+      this.params.id=id
+      deleteSchedule(this.params).then(response=>{
+        this.$message.success("删除成功！！！")
+      })
+      this.getSchedule()
     },
-    updateScheduleTaskStatus(id){
+    deleteScheduleTaskStatus(id){
+      this.params.id=id
+      deleteScheduleTask(this.params).then(response=>{
+        this.$message.success("删除成功！！！")
+        getScheduleTask().then(response => {
+          this.SchedulesTask = response;
+          console.log(this.SchedulesTask)
+        })
+      })
+    },
+    updateScheduleTaskStatus(id) {
       this.$axios({
-        method:'GET',
-        url:'/api/DailySchedule/updateScheduleTaskStatus/'+id,
-        data:{
+        method: 'GET',
+        url: '/api/DailySchedule/updateScheduleTaskStatus/' + id,
+        data: {
           token: this.$store.state.Token.token
         }
-      }).then(response=>{
-        if(response.data==true){
+      }).then(response => {
+        if (response.data == true) {
           this.$message.success("恭喜你，完成任务!")
           this.getScheduleTask()
-        }else{
+        } else {
           this.$message.error("抱歉，更新失败，请重试!")
         }
       })
     },
-    download(item){
-      console.log(item)
-      this.$axios.get('/api/XPHnetDisk/downloadFile',{
-        headers:{
-          'Content-Type':'application/json',
-          'token':this.$store.state.Token.token,
-          'responseType': 'blob'
-        },
-        params:{
-          'url':'/user/data/upload/'+item
-        }
-      }).then(response=>{
-        // console.log(response.data)
-        // const link = document.createElement('a')
-        // const blob = new Blob([response.data],{ type: 'application/octet-stream' })
-        // link.href = window.URL.createObjectURL(blob)
-        // link.download=item
-        // link.click()
-        // window.URL.revokeObjectURL(link.href)
-        let url = window.URL.createObjectURL(new Blob([response.data]));
-        let link = document.createElement("a");
-        link.style.display = "none";
-        link.href = url;
-        link.setAttribute("download", item);
-        document.body.appendChild(link);
+    download(fileid,F_namesvr) {
+      this.params.fileID=fileid
+      this.params.url=this.currentPath
+      download(this.params).then(response => {
+        this.$message.info("开始下载。。。")
+        console.log(response)
+        const link=document.createElement('a');
+        const url = window.URL || window.webkitURL || window.moxURL;
+        link.href=url.createObjectURL(response);
+        link.download = F_namesvr;   //下载的文件名称
         link.click();
-
-        document.body.removeChild(link); // 下载完成移除元素
-        window.URL.revokeObjectURL(url); // 释放掉blob对象
-      },error=>{
+        window.URL.revokeObjectURL(url);  //  #URL.revokeObjectURL()方法会释放一个通过URL.createObjectURL()创建的对象URL. 当你要已经用过了这个对象URL,然后要让浏览器知道这个URL已经不再需要指向对应的文件的时候,就需要调用这个方法.
+      }, error => {
         this.$message.error(error)
       })
     }
   },
-  beforeMount(){
-    getFileList().then(response=>{
-      console.log("获取网盘的目录"+response)
-      this.DiskNetData=response
-    },error=>{
+  beforeMount() {
+    this.params.url = this.currentPath
+    getFileList(this.params).then(response => {
+      console.log("获取网盘的目录" + response)
+      this.DiskNetData = response
+    }, error => {
       this.$message.error(error)
     })
-    getScheduleTask().then(response=>{
-      this.SchedulesTask=response;
+    getScheduleTask().then(response => {
+      this.SchedulesTask = response;
       console.log(this.SchedulesTask)
     })
   }
@@ -334,23 +397,30 @@ export default {
   min-height: 200px;
   margin-top: 20px;
 }
+
 /*.el-card:hover{*/
 /*  margin-top: -10px;*/
 /*}*/
 .el-button {
   width: 70px;
 }
+
 .el-form {
   height: 200px;
   width: 350px
 }
-.el-input__inner{
+
+.el-input__inner {
   width: 40%;
 }
-.el-form{
+
+.el-form {
   width: auto;
 }
-.el-form-item{
+.el-menu{
+  width: 100%;
+}
+.el-form-item {
   width: auto;
 }
 </style>

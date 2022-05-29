@@ -12,12 +12,16 @@ let util = {
     if (token && token !== '') {
       flag = true;
     } else {
+      console.log("token不存在！！！")
       flag = false;
     }
     return flag;
   },
   goLogin(){
     this.$router.push('/')
+  },
+  goIndex(){
+    this.$router.push('/index')
   }
 }
 export default util

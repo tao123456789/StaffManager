@@ -54,7 +54,9 @@ service.interceptors.response.use(
       } else if (response.data.state === 0) {
         // Message.error(response.data.message);
         return response.data;
-      } else {
+      }else if(response.data.state === 500){
+        Message.error("网络问题！");
+      }else {
         return response.data;
       }
     }
