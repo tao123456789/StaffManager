@@ -101,9 +101,7 @@
               </el-button>
             </el-form-item>
             <el-form-item>
-              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary"
-                         @click=showAddscheduleDialog>新增固定计划
-              </el-button>
+              <el-button type="primary" @click=showAddscheduleDialog>新增固定计划</el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
@@ -114,8 +112,7 @@
               <el-input style="max-width: 370px;" v-model='taskContent' @click="addSchedule()"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary" @click="addSchedule">新增
-              </el-button>
+              <el-button  type="primary" @click="addSchedule">新增</el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
@@ -123,12 +120,10 @@
           <el-form style="height: 200px;width: 400px">
             <el-form-item>
               <span>文件名称：</span>
-              <el-input style="max-width: 370px;" v-model='addFileName' @click="addSchedule()"></el-input>
+              <el-input style="width: auto;" v-model='addFileName' @click="addSchedule()"></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button style="float: left;margin-right: 10px;width: 140px" type="primary"
-                         @click="addFile(addFileName)">新增
-              </el-button>
+              <el-button type="primary" @click="addFile(addFileName)">新增</el-button>
             </el-form-item>
           </el-form>
         </el-dialog>
@@ -145,10 +140,9 @@
         <el-form-item>
           <el-upload
             ref="uploadExcel"
-            action=""
             :limit=limitNum
             :auto-upload="false"
-            accept=".xlsx"
+            accept=".*"
             :before-upload="beforeUploadFile"
             :on-change="fileChange"
             :on-exceed="exceedFile"
@@ -218,10 +212,8 @@ export default {
       uploadFile(formData).then(res => {
         console.log(res)
         this.$message.success(this.form.file.name + res.data)
+        this.goPath(this.currentPath)
       })
-        .catch(err => {
-
-        })
     },
     // 文件超出个数限制时的钩子
     exceedFile(files, fileList) {
@@ -292,8 +284,12 @@ export default {
       this.params2.currentPath = this.currentPath
       this.params2.name = name
       addFilePath(this.params2).then(response => {
-        console.log(response)
-        this.$message.success("新增成功!")
+        if(response=="新建成功！"){
+          this.$message.success(response)
+        }else{
+          this.$message.error(response)
+        }
+        this.goPath(this.currentPath)
       })
     },
     goPath(F_namesvr) {
@@ -402,7 +398,9 @@ export default {
 /*  margin-top: -10px;*/
 /*}*/
 .el-button {
-  width: 70px;
+  float: left;
+  margin-right: 10px;
+  width: auto
 }
 
 .el-form {
