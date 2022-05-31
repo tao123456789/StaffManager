@@ -9,16 +9,26 @@
         <el-input v-model="loginInfo.userPasswd" clearable show-password placeholder="密码"></el-input>
         <div class="content_button">
           <el-button type="primary" @click="SignIn">登录</el-button>
-          <el-link type="primary" :href="href">注册</el-link>&nbsp;&nbsp;
-          <el-link type="primary" :href="href">找回密码</el-link>
+          <el-link type="primary" @click="registerDialog=!registerDialog">注册（已开放）</el-link>&nbsp;&nbsp;
+          <el-link type="primary" :href="href">找回密码（关闭）</el-link>
         </div>
       </div>
     </div>
+    <el-dialog :visible.sync="registerDialog" title="网站内测阶段">
+      <div class="title">
+        <p>注册</p>
+      </div>
+      用户名：<el-input v-model="registerUser" clearable placeholder="用户名"></el-input>
+      密码：<el-input v-model="registerPassword" disabled clearable placeholder="系统生成"></el-input>
+      邀请码：<el-input v-model="userAuth" clearable placeholder="邀请码"></el-input>
+      <el-button @click="register()">注册</el-button>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import * as sysTool from '../common/systemTool';
+import {register} from "../api/UserApi/User";
 
 export default {
   name: 'Login',
@@ -33,7 +43,12 @@ export default {
         'brower': '',
         'os': '',
         'logintime':''
-      }
+      },
+      registerDialog:false,
+      registerUser:"",
+      registerPassword:"",
+      userAuth:"",
+      params: {},
     }
   },
   methods: {
@@ -71,6 +86,29 @@ export default {
         },
         error=>{
           this.$message.error("登录失败，请重试！")
+        })
+      }
+    },
+    register(){
+      if(!this.registerUser){
+        this.$message.error("用户名为空！！！")
+      }else if (!this.userAuth) {
+        this.$message.error("邀请码为空！！！")
+        }else{
+        this.params.userName=this.registerUser
+        this.params.beinviteauth=this.userAuth
+        this.params.area=sessionStorage.getItem('area')
+        let data = new Date()
+        this.params.logintime=data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate() + " " + data.getHours() + ":" + data.getMinutes() + ":" + data.getSeconds()
+        register(this.params).then(res=>{
+          if(res.code===500) {
+            this.$message.error(res.data)
+          }
+          if(res.code===200) {
+            this.registerPassword=res.data
+            console.log(res.data)
+            this.$message.success("注册成功！！！")
+          }
         })
       }
     }

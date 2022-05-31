@@ -38,10 +38,8 @@
 <!--  上传文件-->
   <el-dialog
     title="上传文件"
-    :visible="uploadShow"
-    width="40%"
-    :before-close="handleClose"
-  >
+    :visible.sync="uploadShow"
+    width="40%">
     <el-form>
       <el-form-item>
         <el-upload
@@ -206,14 +204,6 @@ export default {
         message: `文件上传失败`
       });
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-          this.uploadShow=false
-        })
-        .catch(_ => {});
-    }
   },
   beforeCreate() {
     this.$axios.get('/api/material/getAllMaterial',{

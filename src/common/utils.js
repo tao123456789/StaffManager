@@ -12,7 +12,7 @@ let util = {
     if (token && token !== '') {
       flag = true;
     } else {
-      console.log("token不存在！！！")
+      console.log("store的token不存在")
       flag = false;
     }
     return flag;

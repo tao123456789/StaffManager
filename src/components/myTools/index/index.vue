@@ -132,9 +132,8 @@
     <!--  上传文件-->
     <el-dialog
       title="上传文件"
-      :visible="uploadShow"
+      :visible.sync="uploadShow"
       width="40%"
-      :before-close="handleClose"
     >
       <el-form>
         <el-form-item>
@@ -266,16 +265,6 @@ export default {
         message: `文件上传失败`
       });
     },
-    handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
-          done();
-          this.uploadShow = false
-        })
-        .catch(_ => {
-        });
-    },
-
     //网盘方法
     showFileDialog() {
       this.addFileDialog = !this.addFileDialog
