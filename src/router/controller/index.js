@@ -2,7 +2,7 @@ import controller from "../../components/controller/index/index"
 import logger from "../../components/controller/log/log"
 import netStatus from "../../components/controller/netStatus/netStatus"
 import AspectLog from "../../components/controller/aspectlog/index"
-import allUser from "../../components/mms/user/allUser";
+import allUser from "../../components/controller/user/allUser";
 import auth from "../../components/controller/auth/index"
 
 export default [

@@ -4,7 +4,7 @@ import Login from '../components/Login'
 import MMS from "../components/mms/index/index";
 import index from "../index/index";
 import allMaterial from '../components/mms/material/allMaterial'
-import allUser from "../components/mms/user/allUser";
+import allUser from "../components/controller/user/allUser";
 import menuSetting from "../components/mms/setting/menuSetting/index"
 import test from "../components/test"
 import myTools from "../components/myTools/index/index"
