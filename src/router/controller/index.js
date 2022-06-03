@@ -4,6 +4,7 @@ import netStatus from "../../components/controller/netStatus/netStatus"
 import AspectLog from "../../components/controller/aspectlog/index"
 import allUser from "../../components/controller/user/allUser";
 import auth from "../../components/controller/auth/index"
+import setting from "../../components/controller/setting/index"
 
 export default [
   {
@@ -33,6 +34,11 @@ export default [
         path: '/AspectLog',
         name: 'AspectLog',
         component: AspectLog,
+      },
+      {
+        path: '/setting',
+        name: 'setting',
+        component: setting,
       },
       //网络状态
       {

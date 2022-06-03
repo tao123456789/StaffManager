@@ -15,5 +15,8 @@ export function getSubscriberList(params) {
 export function changeStatus(params) {
   return http.get('/api/logger/changeStatus',params)
 }
+export function getSettingList(params) {
+  return http.get('/api/setting/getSettingList',params)
+}
 
 

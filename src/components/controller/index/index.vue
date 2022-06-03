@@ -110,6 +110,17 @@ export default {
         },
         {
           icon: 'el-icon-document-checked',
+          name: '配置管理',
+          url: "/",
+          children: [
+            {
+              name: "基础配置",
+              url: '/setting',
+            }
+          ]
+        },
+        {
+          icon: 'el-icon-document-checked',
           name: '网络管理',
           url: "/",
           children: [
