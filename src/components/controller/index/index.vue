@@ -80,7 +80,7 @@ export default {
     initMenu() {
       this.menuData = [{
         icon: 'el-icon-postcard',
-        name: '账号管理',
+        name: '基础管理',
         url: "/controller",
         children: [
           {
@@ -90,6 +90,10 @@ export default {
           {
             name: "权限管理",
             url: '/Auth',
+          },
+          {
+            name: "订阅管理",
+            url: '/Subscriber',
           }
         ]
       },

@@ -168,7 +168,7 @@ import {
   deleteSchedule,
   deleteScheduleTask,
   getSchedule,
-  getScheduleTask
+  getScheduleTask, updateScheduleTaskStatus
 } from "../../../api/scheduleApi/schedule"
 
 export default {
@@ -328,20 +328,14 @@ export default {
       })
     },
     updateScheduleTaskStatus(id) {
-      this.$axios({
-        method: 'GET',
-        url: '/api/DailySchedule/updateScheduleTaskStatus/' + id,
-        data: {
-          token: this.$store.state.Token.token
-        }
-      }).then(response => {
-        if (response.data == true) {
+      updateScheduleTaskStatus(id).then(response => {
+        if (response == true) {
           this.$message.success("恭喜你，完成任务!")
-          this.getScheduleTask()
         } else {
           this.$message.error("抱歉，更新失败，请重试!")
         }
       })
+      getScheduleTask()
     },
     download(fileid,F_namesvr) {
       this.params.fileID=fileid
