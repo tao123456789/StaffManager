@@ -120,6 +120,10 @@ export default {
             {
               name: "基础配置",
               url: '/setting',
+            },
+            {
+              name: "定时任务管理",
+              url: '/schedule',
             }
           ]
         },
