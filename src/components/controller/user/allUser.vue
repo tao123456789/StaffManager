@@ -18,7 +18,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog :visible.sync="authDialodShow">
+    <el-dialog :visible.sync="authDialodShow" title="首页模块权限">
+      <el-button type="primary" @click="insetUserModule()">新增</el-button>
       <el-table :data="moduleList" border stripe>
         <el-table-column label="编号" align="center" width="60px">
           <template slot-scope="scope">
@@ -28,24 +29,34 @@
         <el-table-column label="id" prop="id"></el-table-column>
         <el-table-column label="用戶ID" prop="userid"></el-table-column>
         <el-table-column label="用戶名" prop="username"></el-table-column>
+        <el-table-column label="真实名称" prop="realname"></el-table-column>
         <el-table-column label="模块ID" prop="moduleid"></el-table-column>
         <el-table-column label="模块名称" prop="module_name"></el-table-column>
         <el-table-column label="URL" prop="module_url"></el-table-column>
-        <el-table-column label="描述" prop="description"></el-table-column>
+        <el-table-column label="描述" prop="description" width="160%"></el-table-column>
         <el-table-column label="描述" prop="">
           <template slot-scope="scope">
-            <el-button type="primary" @click="change(scope.row.id,scope.row.status)">
-              {{scope.row.status == 1 ? "关闭" : "启用"}}
-            </el-button>
+            <el-button type="danger" @click="removeModule(scope.row.id)">移除</el-button>
           </template>
         </el-table-column>
       </el-table>
+    </el-dialog>
+    <el-dialog :visible.sync="insetUserModuleDialog" title="新增权限">
+      <el-select v-model="selectedValue" placeholder="请选择">
+        <el-option
+          v-for="item in moduleLists"
+          :key="item.id"
+          :value="item.id"
+          :label="item.module_name"
+          />
+      </el-select>
+      <el-button type="primary" @click="selectChange">添加</el-button>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { getModuleListByUserID} from "../../../api/UserApi/User";
+import {addModuleAPI, getAllModuleList, getModuleListByUserID, removeModuleAPI} from "../../../api/UserApi/User";
 
 export default {
   name: "allUser",
@@ -53,8 +64,11 @@ export default {
     return{
       userList: [],
       moduleList: [],
+      moduleLists: [],
       authDialodShow: false,
+      insetUserModuleDialog:false,
       params: {},
+      selectedValue:"",
     }
   },
   methods:{
@@ -63,8 +77,28 @@ export default {
       this.authDialodShow=!this.authDialodShow
       this.params.userid=id
       getModuleListByUserID(this.params).then(response=>{
-        console.log(response)
         this.moduleList=response
+      })
+    },
+    removeModule(id){
+      this.params.id=id
+      removeModuleAPI(this.params).then(response=>{
+        getModuleListByUserID(this.params).then(response=>{
+          this.moduleList=response
+        })
+      })
+    },
+    insetUserModule() {
+      this.insetUserModuleDialog=!this.insetUserModuleDialog
+    },
+    selectChange(){
+      this.params.moduleid=this.selectedValue
+      addModuleAPI(this.params).then(response => {
+        console.log("操作成功")
+        getModuleListByUserID(this.params).then(response=>{
+          this.moduleList=response
+        })
+        this.insetUserModuleDialog=!this.insetUserModuleDialog
       })
     }
   },
@@ -78,10 +112,17 @@ export default {
       this.userList=response.data;
       console.log(this.userList)
     })
+    getAllModuleList().then(response => {
+      console.log(response)
+      this.moduleLists=response
+    })
   }
 }
 </script>
 
 <style scoped>
-
+.el-button{
+  width: auto;
+  margin-bottom: 10px;
+}
 </style>

@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import {getSubscriberList} from "../../../api/controllerApi/aspectLogApi";
+import {changeStatus, getSubscriberList} from "../../../api/controllerApi/aspectLogApi";
+import {getAllModuleList} from "../../../api/UserApi/User";
 
 export default {
   name: "index",
@@ -38,9 +39,25 @@ export default {
       params: {}
     }
   },
+  methods:{
+    change(id, status) {
+      this.params.id = id
+      if (status == 0) {
+        this.params.status = 1
+      } else {
+        this.params.status = 0
+      }
+      changeStatus(this.params).then(response => {
+        this.$message.success("操作成功！")
+        //刷新列表
+        getSubscriberList().then(response => {
+          this.SubscriberList = response
+        })
+      })
+    }
+  },
   created() {
     getSubscriberList().then(response => {
-      console.log(response)
       this.SubscriberList = response
     })
   }
