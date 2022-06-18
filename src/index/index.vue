@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import {getModuleList} from "../api/UserApi/User"
+import {getModule} from "../api/UserApi/User"
 export default {
   name: "index",
   // <!--    控制网络连接状态-->
@@ -73,12 +73,6 @@ export default {
     }
   },
   methods:{
-    getModuleList(){
-      getModuleList().then(response=>{
-        console.log(response)
-        this.moduleList=response
-      })
-    },
     handleSelect(){
 
     },
@@ -100,7 +94,10 @@ export default {
   mounted () {
   },
   created() {
-    this.getModuleList()
+    getModule().then(response=>{
+      console.log(response)
+      this.moduleList=response
+    })
   },
   beforeDestroy () {
   },

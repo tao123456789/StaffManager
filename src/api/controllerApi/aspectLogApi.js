@@ -16,7 +16,7 @@ export function changeStatus(params) {
   return http.get('/api/logger/changeStatus',params)
 }
 export function getSettingList(params) {
-  return http.get('/api/setting/getSettingList',params)
+  return http.post('/api/setting/getSettingList',params)
 }
 
 

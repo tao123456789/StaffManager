@@ -5,6 +5,7 @@ import AspectLog from "../../components/controller/aspectlog/index"
 import allUser from "../../components/controller/user/allUser";
 import auth from "../../components/controller/auth/index"
 import setting from "../../components/controller/setting/index"
+import subscriber from "../../components/controller/subscriber/index"
 
 export default [
   {
@@ -23,6 +24,12 @@ export default [
         path: '/auth',
         name: 'auth',
         component: auth,
+      },
+      //订阅管理
+      {
+        path: '/subscriber',
+        name: 'subscriber',
+        component: subscriber,
       },
       {
         path: '/logger',

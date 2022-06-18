@@ -26,6 +26,27 @@
           <el-col :xs="18" :sm="17" :md="24" :lg="9" :xl="8">
             <el-card class="box-card">
               <div slot="header" class="clearfix">
+                <span style="font-size: 30px">个人信息</span>
+                <el-button type="primary" style="float: right" @click="editUserInfo()">编辑</el-button>
+              </div>
+              <el-form>
+                <el-form-item>用户名ID：{{userInfo.id}}</el-form-item>
+                <el-form-item>系统名：{{userInfo.userName}}</el-form-item>
+                <el-form-item>用户名：{{userInfo.realName}}</el-form-item>
+                <el-form-item>电话：{{userInfo.tel}}</el-form-item>
+                <el-form-item>邮箱：{{userInfo.qqmail}}</el-form-item>
+                <el-form-item>登录IP：{{userInfo.ip}}</el-form-item>
+                <el-form-item>登录设备：{{userInfo.os}}</el-form-item>
+                <el-form-item>浏览器型号：{{userInfo.brower}}</el-form-item>
+                <el-form-item>登录时间：{{userInfo.logintime}}</el-form-item>
+                <el-form-item>个人邀请码：{{userInfo.inviteAuth}}</el-form-item>
+                <el-form-item>来自邀请码：{{userInfo.beinviteauth}}</el-form-item>
+              </el-form>
+            </el-card>
+          </el-col>
+          <el-col :xs="18" :sm="17" :md="24" :lg="9" :xl="8">
+            <el-card class="box-card">
+              <div slot="header" class="clearfix">
                 <span style="font-size: 30px">常用网站</span>
               </div>
               <el-form>
@@ -127,6 +148,29 @@
             </el-form-item>
           </el-form>
         </el-dialog>
+        <el-dialog :visible.sync="editUserInfoDialog" title="编辑个人信息">
+          <el-form>
+            <el-form-item>
+              <span>用户名：</span>
+              <el-input style="width: auto;" v-model='userInfo.realName'></el-input>
+            </el-form-item>
+            <el-form-item>
+              <span>密码： </span>
+              <el-input style="width: auto;" v-model='userPasswd'></el-input>
+            </el-form-item>
+            <el-form-item>
+              <span>邮箱： </span>
+              <el-input style="width: auto;" v-model='userInfo.qqmail'></el-input>
+            </el-form-item>
+            <el-form-item>
+              <span>电话： </span>
+              <el-input style="width: auto;" v-model='userInfo.tel'></el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="updateUserInfo()">修改</el-button>
+            </el-form-item>
+          </el-form>
+        </el-dialog>
       </div>
     </el-container>
     <!--  上传文件-->
@@ -168,8 +212,10 @@ import {
   deleteSchedule,
   deleteScheduleTask,
   getSchedule,
-  getScheduleTask, updateScheduleTaskStatus
+  getScheduleTask,
+  updateScheduleTaskStatus
 } from "../../../api/scheduleApi/schedule"
+import {getUserByID, updateUserInfoApi} from "../../../api/UserApi/User";
 
 export default {
   name: "homepage",
@@ -195,7 +241,10 @@ export default {
       },
       fileList: [],
       backPath: "",
-      currentPath: ""
+      currentPath: "",
+      userInfo:'',
+      userPasswd:'',
+      editUserInfoDialog: false,
     }
   },
   methods: {
@@ -352,6 +401,18 @@ export default {
       }, error => {
         this.$message.error(error)
       })
+    },
+    editUserInfo(){
+      this.editUserInfoDialog=!this.editUserInfoDialog
+    },
+    updateUserInfo(){
+      this.params.userName=this.userInfo.userName
+      this.params.userPasswd=this.userPasswd
+      this.params.qqmail=this.userInfo.qqmail
+      this.params.tel=this.userInfo.tel
+      updateUserInfoApi(this.params).then(response=>{
+        console.log("修改成功！！！")
+      })
     }
   },
   beforeMount() {
@@ -365,6 +426,10 @@ export default {
     getScheduleTask().then(response => {
       this.SchedulesTask = response;
       console.log(this.SchedulesTask)
+    })
+    getUserByID().then(response => {
+      this.userInfo = response;
+      console.log(this.userInfo)
     })
   }
 }
@@ -387,7 +452,7 @@ export default {
 }
 
 .el-form {
-  height: 200px;
+  height: auto;
   width: 350px
 }
 

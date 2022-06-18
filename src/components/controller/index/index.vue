@@ -93,7 +93,7 @@ export default {
           },
           {
             name: "订阅管理",
-            url: '/Subscriber',
+            url: '/subscriber',
           }
         ]
       },
