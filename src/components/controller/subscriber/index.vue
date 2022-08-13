@@ -12,9 +12,9 @@
         </template>
       </el-table-column>
       <el-table-column label="subscriber.id" prop="id"></el-table-column>
-      <el-table-column label="类型" prop="type"></el-table-column>
-      <el-table-column label="订阅者" prop="subscriber"></el-table-column>
-      <el-table-column label="订阅信息" prop="message"></el-table-column>
+      <el-table-column label="类型" prop="code"></el-table-column>
+      <el-table-column label="订阅者" prop="name"></el-table-column>
+      <el-table-column label="订阅信息" prop="remark"></el-table-column>
       <el-table-column label="状态" prop="status"></el-table-column>
       <el-table-column label="操作" prop="">
         <template slot-scope="scope">

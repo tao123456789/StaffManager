@@ -4,16 +4,12 @@ import Login from '../components/Login'
 import MMS from "../components/mms/index/index";
 import index from "../index/index";
 import allMaterial from '../components/mms/material/allMaterial'
-import allUser from "../components/controller/user/allUser";
 import menuSetting from "../components/mms/setting/menuSetting/index"
 import test from "../components/test"
 import myTools from "../components/myTools/index/index"
 import demo from "../layout/demoLayout/demoLayout"
 import jsonTool from "../components/tools/jsonTool"
-import netStatus from "../components/controller/netStatus/netStatus"
-
 import controller from "../router/controller/index"
-import subscriber from "../components/controller/subscriber";
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = Router.prototype.push

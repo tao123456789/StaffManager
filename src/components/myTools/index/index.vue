@@ -112,6 +112,22 @@
               </el-table>
             </el-card>
           </el-col>
+          <el-col :xs="18" :sm="17" :md="24" :lg="9" :xl="8">
+            <el-card class="box-card">
+              <div slot="header" class="clearfix">
+                <span style="font-size: 30px">公共订阅</span>
+              </div>
+              <el-table :data="SchedulesTask" border stripe>
+                <el-table-column label="任务内容" prop="taskContent" width="160px"></el-table-column>
+                <el-table-column label="操作">
+                  <template slot-scope="scope">
+                    <el-button style="float: right;margin-right: 10px" type="primary" @click="deleteScheduleTaskStatus(scope.row.id)">删除</el-button>
+                    <el-button style="float: right;margin-right: 10px" type="primary" @click="updateScheduleTaskStatus(scope.row.id)">{{scope.row.status==0?"完成":"已完成"}}</el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-card>
+          </el-col>
         </el-row>
         <el-dialog style="width: 100%" :visible.sync="scheduleDialog" title="每日固定计划查看">
           <el-form style="height: auto;width: auto">
@@ -383,6 +399,10 @@ export default {
         } else {
           this.$message.error("抱歉，更新失败，请重试!")
         }
+        getScheduleTask().then(response => {
+          this.SchedulesTask = response;
+          console.log(this.SchedulesTask)
+        })
       })
       getScheduleTask()
     },
@@ -425,7 +445,6 @@ export default {
     })
     getScheduleTask().then(response => {
       this.SchedulesTask = response;
-      console.log(this.SchedulesTask)
     })
     getUserByID().then(response => {
       this.userInfo = response;

@@ -56,7 +56,13 @@
 </template>
 
 <script>
-import {addModuleAPI, getAllModuleList, getModuleListByUserID, removeModuleAPI} from "../../../api/UserApi/User";
+import {
+  addModuleAPI,
+  getAllModuleList,
+  getAllUser,
+  getModuleListByUserID,
+  removeModuleAPI
+} from "../../../api/UserApi/User";
 
 export default {
   name: "allUser",
@@ -102,14 +108,9 @@ export default {
       })
     }
   },
-  beforeMount() {
-    this.$axios.get('/api/user/getAllUser',{
-      headers:{
-        'Content-Type':'application/json',
-        'token':this.$store.state.Token.token
-      }
-    }).then(response=>{
-      this.userList=response.data;
+  beforeCreate() {
+    getAllUser().then(response=>{
+      this.userList=response;
       console.log(this.userList)
     })
     getAllModuleList().then(response => {

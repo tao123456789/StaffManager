@@ -28,6 +28,10 @@ export function getUserByID(){
   return http.get('/api/user/getUserByUserId')
 }
 
+export function getAllUser(){
+  return http.get('/api/user/getAllUser')
+}
+
 export function updateUserInfoApi(params){
   return http.post('/api/user/updateUserInfo',params)
 }

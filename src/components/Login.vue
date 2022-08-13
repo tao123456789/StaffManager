@@ -105,7 +105,7 @@ export default {
             this.$message.error(res.data)
           }
           if(res.code===200) {
-            this.registerPassword=res.data
+            this.registerPassword=res.msg
             console.log(res.data)
             this.$message.success("注册成功！！！")
           }

@@ -42,7 +42,6 @@
       <el-container style="margin-left: 40px;margin-top: 20px">
         <el-button type="primary" @click="enterJsonTool1">JSON转换1</el-button>
         <el-button type="primary" @click="enterJsonTool2">JSON转换2</el-button>
-        <el-button type="primary" @click="netStatus">网络状态</el-button>
       </el-container>
     </div>
   </div>
@@ -52,18 +51,6 @@
 import {getModule} from "../api/UserApi/User"
 export default {
   name: "index",
-  // <!--    控制网络连接状态-->
-  props: {
-    offlineTitle: {
-      type: String,
-      default: '网络已断开，请检查网络'
-    },
-    onlineTitle: {
-      type: String,
-      default: '网络已连接'
-    }
-  },
-
   data(){
     return{
       // <!--    控制网络连接状态-->
@@ -85,10 +72,7 @@ export default {
     },
     enterJsonTool2(){
       this.$router.push("/jsonTool2")
-    },
-    netStatus(){
-      this.$router.push("/netStatus")
-    },
+    }
   },
   // 画面DOM创建时
   mounted () {
