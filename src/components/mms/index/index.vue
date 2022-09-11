@@ -1,11 +1,11 @@
 <template>
   <div id="homepage">
     <!--    顶部导航栏-->
+<!--    @select="handleSelect"-->
     <el-menu
       :default-active="$route.path"
       class="el-menu-demo"
       mode="horizontal"
-      @select="handleSelect"
       background-color="#46A3FF"
       text-color="#FFF"
       text-size="20px"
@@ -74,6 +74,8 @@
 </template>
 
 <script>
+import {getMenu} from "../../../api/MMSApi/mmsApi";
+
 export default {
   name: "homepage",
   data() {
@@ -101,14 +103,9 @@ export default {
     }
   },
   beforeCreate() {
-    this.$axios.get('/api/menu/getMenu', {
-      headers: {
-        'Content-Type': 'application/json',
-        'token': this.$store.state.Token.token
-      }
-    }).then(response => {
-      console.log("获取用户的菜单" + JSON.stringify(response.data))
-      this.menuData = response.data
+    getMenu().then(response => {
+      console.log("获取用户的菜单" + JSON.stringify(response))
+      this.menuData = response
     }, error => {
       this.$message.error(error)
     })

@@ -10,6 +10,9 @@ import myTools from "../components/myTools/index/index"
 import demo from "../layout/demoLayout/demoLayout"
 import jsonTool from "../components/tools/jsonTool"
 import controller from "../router/controller/index"
+import delivery from "../components/mms/material/allDelivery"
+import deliveryDetail from "../components/mms/material/allDeliveryDetail"
+import supplier from "../components/mms/material/allSupplier"
 
 // 解决ElementUI导航栏中的vue-router在3.0版本以上重复点菜单报错问题
 const originalPush = Router.prototype.push
@@ -52,7 +55,22 @@ export default new Router({
           path:'/menuSetting',
           name:'menuSetting',
           component:menuSetting,
-        }
+        },
+        {
+          path:'/delivery',
+          name:'delivery',
+          component:delivery,
+        },
+        {
+          path:'/deliveryDetail',
+          name:'deliveryDetail',
+          component:deliveryDetail,
+        },
+        {
+          path:'/supplier',
+          name:'supplier',
+          component:supplier,
+        },
       ]
     },
     //myTools系统的路由

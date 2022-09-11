@@ -117,12 +117,12 @@
               <div slot="header" class="clearfix">
                 <span style="font-size: 30px">公共订阅</span>
               </div>
-              <el-table :data="SchedulesTask" border stripe>
-                <el-table-column label="任务内容" prop="taskContent" width="160px"></el-table-column>
+              <el-table :data="SubscriberList" border stripe>
+                <el-table-column label="任务内容" prop="name" width="160px"></el-table-column>
+                <el-table-column label="任务内容" prop="remark" width="160px"></el-table-column>
                 <el-table-column label="操作">
                   <template slot-scope="scope">
-                    <el-button style="float: right;margin-right: 10px" type="primary" @click="deleteScheduleTaskStatus(scope.row.id)">删除</el-button>
-                    <el-button style="float: right;margin-right: 10px" type="primary" @click="updateScheduleTaskStatus(scope.row.id)">{{scope.row.status==0?"完成":"已完成"}}</el-button>
+                    <el-button style="float: right;margin-right: 10px" type="primary" @click="updateScheduleTaskStatus(scope.row.id)">{{scope.row.status==0?"订阅":"已订阅"}}</el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -232,6 +232,7 @@ import {
   updateScheduleTaskStatus
 } from "../../../api/scheduleApi/schedule"
 import {getUserByID, updateUserInfoApi} from "../../../api/UserApi/User";
+import {getSubscriberList} from "../../../api/controllerApi/aspectLogApi";
 
 export default {
   name: "homepage",
@@ -261,6 +262,7 @@ export default {
       userInfo:'',
       userPasswd:'',
       editUserInfoDialog: false,
+      SubscriberList:[]
     }
   },
   methods: {
@@ -449,6 +451,9 @@ export default {
     getUserByID().then(response => {
       this.userInfo = response;
       console.log(this.userInfo)
+    })
+    getSubscriberList().then(response => {
+      this.SubscriberList = response
     })
   }
 }

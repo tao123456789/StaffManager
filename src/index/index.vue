@@ -24,7 +24,7 @@
 <!--        md	≥992px 响应式栅格数或者栅格属性对象	用于中屏设备-->
 <!--        lg	≥1200px 响应式栅格数或者栅格属性对象	用于大屏设备-->
 <!--        xl	≥1920px 响应式栅格数或者栅格属性对象	用于超大屏设备-->
-        <el-col :xs="20" :sm="19" :md="18" :lg="7" :xl="5.5" v-for="(item,index) in moduleList" :key="index">
+        <el-col :xs="20" :sm="19" :md="18" :lg="7" :xl="6" v-for="(item,index) in moduleList" :key="index">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span style="font-size: 30px;">{{item.module_name}}</span>
