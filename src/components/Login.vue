@@ -73,15 +73,15 @@ export default {
             'Content-Type': 'application/json'
           }
         }).then(response => {
-          if(response.data!="false") {
+          if(response.data.code==200) {
             // 获取token，并存储在store中
-            this.$store.state.Token.token = response.data
+            this.$store.state.Token.token = response.data.data
             //存储token在sessionStorage，浏览器页面签关闭即删除sessionStorage
-            sessionStorage.setItem('token', response.data)
+            sessionStorage.setItem('token', response.data.data)
             this.$message.success("登录成功！")
             this.$router.push("/index")
           }else{
-            this.$message.error("登录失败，请重试！")
+            this.$message.error(response.data.msg)
           }
         },
         error=>{

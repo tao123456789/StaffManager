@@ -20,8 +20,8 @@ let util = {
   goLogin(){
     this.$router.push('/')
   },
-  goIndex(){
-    this.$router.push('/index')
-  }
+  // goIndex(){
+  //   this.$router.push('/index')
+  // }
 }
 export default util

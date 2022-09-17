@@ -26,14 +26,14 @@
   </el-table>
   <el-dialog :visible.sync="addMaterialDialog">
     <el-form>
-      <el-row>物料编码：<el-input class="CommonInput" placeholder="例如：FCX-43242" v-model="material_code"></el-input></el-row>
-      <el-row>物料名称：<el-input class="CommonInput" placeholder="例如：纺锤纱" v-model="material_name"></el-input></el-row>
-      <el-row>规格型号：<el-input class="CommonInput" placeholder="例如：446*1090" v-model="material_code"></el-input></el-row>
-      <el-row>物料单位：<el-input class="CommonInput" placeholder="例如：个" v-model="material_code"></el-input></el-row>
-      <el-row>物料单价：<el-input class="CommonInput" placeholder="例如：4329" v-model="material_code"></el-input></el-row>
-      <el-row>供应商公司：<el-input class="CommonInput" placeholder="例如：华南东方海电供应商" v-model="material_code"></el-input></el-row>
-      <el-row>责任人：<el-input class="CommonInput" placeholder="例如：张三" v-model="material_code"></el-input></el-row>
-      <el-row>责任人电话：<el-input class="CommonInput" placeholder="例如：138423444329" v-model="material_code"></el-input></el-row>
+      <el-row>物料编码：<el-input class="CommonInput" placeholder="例如：FCX-43242" v-model="params.material_id"></el-input></el-row>
+      <el-row>物料名称：<el-input class="CommonInput" placeholder="例如：纺锤纱" v-model="params.material_name"></el-input></el-row>
+      <el-row>规格型号：<el-input class="CommonInput" placeholder="例如：446*1090" v-model="params.material_type"></el-input></el-row>
+      <el-row>物料单位：<el-input class="CommonInput" placeholder="例如：个" v-model="params.material_dw"></el-input></el-row>
+      <el-row>物料单价：<el-input class="CommonInput" placeholder="例如：4329" v-model="params.material_price"></el-input></el-row>
+      <el-row>供应商公司：<el-input class="CommonInput" placeholder="例如：华南东方海电供应商" v-model="params.material_gys"></el-input></el-row>
+      <el-row>责任人：<el-input class="CommonInput" placeholder="例如：张三" v-model="params.gys_name"></el-input></el-row>
+      <el-row>责任人电话：<el-input class="CommonInput" placeholder="例如：138423444329" v-model="params.material_name_tel"></el-input></el-row>
       <el-button type="primary" @click="addMaterial()">添加</el-button>
     </el-form>
   </el-dialog>
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import {getAllMaterial} from "../../../api/MMSApi/mmsApi";
+import {addMaterial, getAllMaterial} from "../../../api/MMSApi/mmsApi";
 
 export default {
   name: 'allMaterial',
@@ -59,9 +59,16 @@ export default {
 
       addMaterialDialog: false,
 
-      params:{},
-      material_code:'',
-      material_name:'',
+      params: {
+        material_id: '',
+        material_name: '',
+        material_type: '',
+        material_dw: '',
+        material_price: '',
+        material_gys: '',
+        gys_name: '',
+        material_name_tel: '',
+      }
     }
   },
   methods:{
@@ -97,8 +104,19 @@ export default {
       this.addMaterialDialog=true
     },
     addMaterial(){
+      console.log(JSON.stringify(this.params))
+      addMaterial(JSON.stringify(this.params)).then(response=>{
 
-    }
+      }).catch(reason => {
+        console.log(reason)
+      })
+    },
+    update(){
+      this.addMaterialDialog=true
+    },
+    del(){
+
+    },
   },
   beforeCreate() {
     getAllMaterial().then(response=>{

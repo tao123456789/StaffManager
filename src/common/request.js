@@ -46,16 +46,22 @@ service.interceptors.response.use(
        *
        * *************/
       // bus.$emit('toggleloading', false)//隐藏loading
-      if (response.data.state === 401) {
+      if (response.data.code === 200) {
+        //如果是token过期，跳转至登录
+        Message.success("请求成功："+response.data.msg);
+      }
+      if (response.data.code === 401) {
         //如果是token过期，跳转至登录
         Message.error("登录已过期，请重新登录！");
         store.commit('SET_TOKEN', '');
         util.goLogin();
-      } else if (response.data.state === 0) {
-        // Message.error(response.data.message);
-        return response.data;
+      }
+      if (response.data.code === 2001) {
+        // 账号密码错误
+        Message.error(response.data.msg);
         util.goLogin();
-      }else if(response.data.state === 500){
+      }
+      if(response.data.code === 500){
         Message.error("网络问题！");
         util.goLogin();
       }else {
@@ -65,20 +71,7 @@ service.interceptors.response.use(
   },
   error => {
     //请求失败
-    // ;
-    const response = error.response;
-    if (response.status === 401) {
-      // Toast.fail(response.data.message);
-      Message.error("登录已过期，请重新登录！");
-      util.goLogin();
-    } else if (response.status === 403) {
-      util.goLogin();
-    } else {
-      // Toast.fail(response.data.message ? response.data.message : '系统错误请联系管理员');
-      // Message.error({
-      //     message: '无服务，请联系管理员'
-      // });
-    }
+    Message.error("请求失败："+error);
     return Promise.reject(error);
   }
 );
