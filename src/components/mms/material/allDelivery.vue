@@ -13,7 +13,7 @@
       <el-table-column label="序号" prop="id" width="60px"></el-table-column>
       <el-table-column label="送货单号" prop="delivery_code"></el-table-column>
       <el-table-column label="送货时间" prop="delivery_time"></el-table-column>
-      <el-table-column label="供货方" prop="supplier_name"></el-table-column>
+      <el-table-column label="送货方" prop="supplier_name"></el-table-column>
       <el-table-column label="负责人" prop="supplier_shr"></el-table-column>
       <el-table-column label="电话" prop="supplier_tel"></el-table-column>
       <el-table-column label="创建人" prop="create_name"></el-table-column>
@@ -54,7 +54,7 @@
         <el-table-column label="序号" prop="id" width="60px"></el-table-column>
         <el-table-column label="送货单号" prop="delivery_code"  width="120px"></el-table-column>
         <el-table-column label="送货时间" prop="delivery_time" width="120px"></el-table-column>
-        <el-table-column label="供货方" prop="supplier_name" width="220px"></el-table-column>
+        <el-table-column label="送货方" prop="supplier_name" width="220px"></el-table-column>
         <el-table-column label="物料编码" prop="material_id"></el-table-column>
         <el-table-column label="物料名称" prop="material_name"></el-table-column>
         <el-table-column label="规格" prop="material_type"></el-table-column>
@@ -65,22 +65,26 @@
         <el-table-column label="电话" prop="supplier_tel"></el-table-column>
         <el-table-column label="备注" prop="remark"></el-table-column>
         <el-table-column label="操作" prop="" width="250px">
-          <el-button type="danger" style="width: 80px;height: 40px" @click="del()">删除</el-button>
+          <template slot-scope="scope2">
+            <el-button type="danger" style="width: 80px;height: 40px" @click="delDeliveryDetailNO(scope2.row.id)">删除</el-button>
+          </template>
         </el-table-column>
       </el-table>
     </el-dialog>
-    <el-dialog :visible.sync="addMaterialDialog" width="60%">
+    <el-dialog :visible.sync="addMaterialDialog" width="75%" title="添加物料">
       <div style="display: flex;margin-top: 30px;margin-left: 30px;">
         <el-form>
           <span>物料：</span>
           <el-select placeholder="必选" v-model="tempMaterialValue" filterable  @change="onMaterialTitleChange()">
             <el-option v-for="item in materialList" :label="item.material_name" :value="item.id" :key="item.id"></el-option>
           </el-select>
-          <span style="margin-left: 30px">数量：</span><el-input class="MinCommonInput" v-model="deliveryNo" placeholder="必填"></el-input>
-          <span style="margin-left: 30px">单位：</span><el-input disabled v-model="material_dw"></el-input>
-          <span style="margin-left: 30px">备注：</span><el-input class="MinCommonInput" v-model="remark" placeholder=""></el-input>
+          <span style="margin-left: 30px">数量：</span><el-input class="maxMinCommonInput" v-model="qty"></el-input>
+          <span style="margin-left: 30px">单位：</span><el-input class="maxMinCommonInput" disabled v-model="oneMaterial.material_dw"></el-input>
+          <span style="margin-left: 30px">规格：</span><el-input class="maxMinCommonInput" disabled v-model="oneMaterial.material_type"></el-input>
+          <span style="margin-left: 30px">价格：</span><el-input class="maxMinCommonInput" disabled v-model="oneMaterial.material_price"></el-input>
+          <span style="margin-left: 30px">备注：</span><el-input class="maxMinCommonInput" v-model="materialRemark"></el-input>
         </el-form>
-        <el-button style="width: 80px;height: 40px;margin-left: 30px"  type="primary" @click="addDelivery()">添加</el-button>
+        <el-button style="width: 80px;height: 40px;margin-left: 30px"  type="primary" @click="addDeliveryDetailMaterial()">添加</el-button>
       </div>
     </el-dialog>
   </div>
@@ -93,7 +97,7 @@ import {
   getAllDelivery,
   getDeliveryDetailBy,
   getAllMaterial,
-  getAllSupplier
+  getAllSupplier, delDeliveryDetailNO, getAllMaterialByID, addDeliveryDetailMaterial
 } from "../../../api/MMSApi/mmsApi";
 import {Message} from "element-ui";
 
@@ -110,6 +114,9 @@ export default {
       deliveryList:[],
       selectedList:[],
 
+      //送货单ID缓存
+      tempDeliveryID:"",
+
       deliveryDialog: false,
       DeliveryDetailDialog: false,
       addMaterialDialog:false,
@@ -120,6 +127,7 @@ export default {
       material_code:'',
       material_name:'',
 
+      //送货数量
       deliveryNo:"",
       from_supplier_id:"",
       delivery_time:"",
@@ -131,6 +139,9 @@ export default {
       material_dw:"",
       material_type:"",
       materialList:[],
+      oneMaterial:{},
+      qty:"",
+      materialRemark:"",
 
       itemAdd:1,
     }
@@ -143,7 +154,7 @@ export default {
       var i;
       var that=this;
       if(this.info==='') {
-        this.materialListTemp=this.materialList
+        this.deliveryListTemp=this.deliveryList
       }else{
         //执行遍历查询
         // for (i=0; i < this.materialList.length; i++) {
@@ -154,13 +165,13 @@ export default {
         // this.materialListTemp=this.selectedList
 
         //使用filter查询
-        this.materialListTemp=this.materialList.filter((item)=>item.material_id.indexOf(that.info)!==-1||
-          ((item.material_name.indexOf(that.info)!==-1)||
-            (item.material_gys.indexOf(that.info)!==-1)||item.gys_name.indexOf(that.info)!==-1))
+        this.deliveryListTemp=this.deliveryList.filter((item)=>item.delivery_code.indexOf(that.info)!==-1||
+          ((item.supplier_name.indexOf(that.info)!==-1)||
+            (item.remark.indexOf(that.info)!==-1)))
       }
     },
     reset(){
-      this.materialListTemp=this.materialList
+      this.deliveryListTemp=this.deliveryList
       this.selectedList=[]
     },
 
@@ -189,6 +200,12 @@ export default {
           console.log(response)
         })
       }
+      this.deliveryDialog=false
+      this.deliveryDialogClose()
+      this.params={}
+    },
+    editClick(){
+
     },
     deliveryDialogClose(){
       getAllDelivery().then(response=>{
@@ -198,18 +215,21 @@ export default {
       })
     },
     handleClick(id){
-      this.DeliveryDetailDialog=!this.DeliveryDetailDialog
+      this.DeliveryDetailDialog=true
       this.params.delivery_id=id
+      this.tempDeliveryID=id
       getDeliveryDetailBy(this.params).then(response=>{
         this.deliveryDetailList=response
       })
-      console.log(id)
     },
     onDeliveryTitleChange(){
       console.log(this.from_supplier_id)
     },
     onMaterialTitleChange(){
-      this.material_dw=""
+      getAllMaterialByID(this.tempMaterialValue).then(response=>{
+        console.log(response)
+        this.oneMaterial=response
+      })
     },
     addMaterialDialogShow(){
       this.addMaterialDialog=!this.addMaterialDialog
@@ -222,14 +242,33 @@ export default {
     },
     delOneitem(){
       this.itemAdd=this.itemAdd-1;
-    }
+    },
+    addDeliveryDetailMaterial(){
+      this.params.delivery_id=this.tempDeliveryID;
+      this.params.material_id=this.oneMaterial.id;
+      this.params.qty=this.qty
+      this.params.materialRemark=this.materialRemark
+      addDeliveryDetailMaterial(this.params).then(response=>{
+        this.addMaterialDialog=false;
+        this.handleClick(this.tempDeliveryID)
+      })
+      this.params={}
+    },
+    delDeliveryDetailNO(id){
+      delDeliveryDetailNO(id).then(response=>{
+        this.deliveryDetailList.splice(id,1)
+        this.$message.success("刪除成功！")
+      })
+    },
   },
-  beforeCreate() {
-    getAllDelivery().then(response=>{
-      this.deliveryList=response;
-      this.deliveryListTemp=response;
-      console.log(this.deliveryList)
-    })
+
+  beforeMount() {
+    this.deliveryDialogClose()
+  //   getAllDelivery().then(response=>{
+  //     this.deliveryList=response;
+  //     this.deliveryListTemp=response;
+  //     console.log(this.deliveryList)
+  //   })
   }
 }
 </script>
@@ -248,7 +287,10 @@ export default {
   width: 250px;
 }
 .maxMinCommonInput{
-  width: 50px;
+  width: 90px;
+}
+.el-input .el-input__inner{
+  color: red;
 }
 </style>
 

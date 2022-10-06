@@ -17,9 +17,11 @@ service.interceptors.request.use(
     let tokenExist = util.tokenExist();
     if (tokenExist) {
       // bus.$emit('toggleloading', true)//显示loading
+      console.log("token值存在"+util.getToken())
       //如果token存在
       config.headers['Authorization'] = util.getToken();
-      config.headers['token'] = `${util.getToken()}`;
+      // config.headers['token'] = `${util.getToken()}`;
+      config.headers['token'] = util.getToken();
     }
     // Toast.loading({
     //     message: '加载中...',

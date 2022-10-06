@@ -76,7 +76,7 @@ export default {
       var i;
       var that=this;
       if(this.info==='') {
-        this.materialListTemp=this.materialList
+        this.deliveryListTemp=this.deliveryList
       }else{
         //执行遍历查询
         // for (i=0; i < this.materialList.length; i++) {
@@ -87,13 +87,13 @@ export default {
         // this.materialListTemp=this.selectedList
 
         //使用filter查询
-        this.materialListTemp=this.materialList.filter((item)=>item.material_id.indexOf(that.info)!==-1||
-          ((item.material_name.indexOf(that.info)!==-1)||
-            (item.material_gys.indexOf(that.info)!==-1)||item.gys_name.indexOf(that.info)!==-1))
+        this.deliveryListTemp=this.deliveryList.filter((item)=>item.delivery_code.indexOf(that.info)!==-1||
+          ((item.supplier_name.indexOf(that.info)!==-1)||
+            (item.material_name.indexOf(that.info)!==-1)))
       }
     },
     reset(){
-      this.materialListTemp=this.materialList
+      this.deliveryListTemp=this.deliveryList
       this.selectedList=[]
     },
 

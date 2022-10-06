@@ -5,7 +5,7 @@
         <el-input style="width: 250px" v-model="info"></el-input>
         <el-button @click="find">查找</el-button>
         <el-button @click="reset">重置</el-button>
-        <el-button @click="addMaterialDialogShow" type="primary">新建物料</el-button>
+        <el-button @click="addMaterialDialogShow" type="primary">新建供应商</el-button>
       </el-form-item>
     </el-form>
     <el-table :data="deliveryListTemp" border stripe style="width: 120%">
@@ -20,17 +20,14 @@
         <el-button type="danger" style="width: 80px;height: 40px" @click="del()">删除</el-button>
       </el-table-column>
     </el-table>
-    <el-dialog :visible.sync="addMaterialDialog">
+    <el-dialog :visible.sync="addSupplierDialog">
       <el-form>
-        <el-row>物料编码：<el-input class="CommonInput" placeholder="例如：FCX-43242" v-model="material_code"></el-input></el-row>
-        <el-row>物料名称：<el-input class="CommonInput" placeholder="例如：纺锤纱" v-model="material_name"></el-input></el-row>
-        <el-row>规格型号：<el-input class="CommonInput" placeholder="例如：446*1090" v-model="material_code"></el-input></el-row>
-        <el-row>物料单位：<el-input class="CommonInput" placeholder="例如：个" v-model="material_code"></el-input></el-row>
-        <el-row>物料单价：<el-input class="CommonInput" placeholder="例如：4329" v-model="material_code"></el-input></el-row>
-        <el-row>供应商公司：<el-input class="CommonInput" placeholder="例如：华南东方海电供应商" v-model="material_code"></el-input></el-row>
-        <el-row>责任人：<el-input class="CommonInput" placeholder="例如：张三" v-model="material_code"></el-input></el-row>
-        <el-row>责任人电话：<el-input class="CommonInput" placeholder="例如：138423444329" v-model="material_code"></el-input></el-row>
-        <el-button type="primary" @click="addMaterial()">添加</el-button>
+        <el-row>供应商编码：<el-input class="CommonInput" placeholder="例如：FCX-43242" v-model="supplier_code"></el-input></el-row>
+        <el-row>供应商名称：<el-input class="CommonInput" placeholder="例如：华南科技有限公司" v-model="supplier_name"></el-input></el-row>
+        <el-row>地址：<el-input class="CommonInput" placeholder="例如：446*1090" v-model="supplier_address"></el-input></el-row>
+        <el-row>负责人：<el-input class="CommonInput" placeholder="例如：个" v-model="supplier_shr"></el-input></el-row>
+        <el-row>电话：<el-input class="CommonInput" placeholder="例如：4329" v-model="supplier_tel"></el-input></el-row>
+        <el-button type="primary" @click="addSupplier()">添加</el-button>
       </el-form>
     </el-dialog>
   </div>
@@ -38,7 +35,7 @@
 </template>
 
 <script>
-import {getAllDelivery, getAllMaterial, getAllSupplier} from "../../../api/MMSApi/mmsApi";
+import {addSupplier, getAllDelivery, getAllMaterial, getAllSupplier} from "../../../api/MMSApi/mmsApi";
 
 export default {
   name: 'allDelivery',
@@ -53,11 +50,14 @@ export default {
       deliveryList:[],
       selectedList:[],
 
-      addMaterialDialog: false,
+      addSupplierDialog: false,
 
       params:{},
-      material_code:'',
-      material_name:'',
+      supplier_code:'',
+      supplier_name:'',
+      supplier_shr:'',
+      supplier_tel:'',
+      supplier_address:'',
     }
   },
   methods:{
@@ -79,21 +79,23 @@ export default {
         // this.materialListTemp=this.selectedList
 
         //使用filter查询
-        this.materialListTemp=this.materialList.filter((item)=>item.material_id.indexOf(that.info)!==-1||
-          ((item.material_name.indexOf(that.info)!==-1)||
-            (item.material_gys.indexOf(that.info)!==-1)||item.gys_name.indexOf(that.info)!==-1))
+        this.deliveryListTemp=this.deliveryList.filter((item)=>item.supplier_code.indexOf(that.info)!==-1||
+          ((item.supplier_name.indexOf(that.info)!==-1)||
+            (item.supplier_address.indexOf(that.info)!==-1)||item.supplier_shr.indexOf(that.info)!==-1))
       }
     },
     reset(){
-      this.materialListTemp=this.materialList
+      this.deliveryListTemp=this.deliveryList
       this.selectedList=[]
     },
 
     addMaterialDialogShow(){
-      this.addMaterialDialog=true
+      this.addSupplierDialog=true
     },
-    addMaterial(){
+    addSupplier(){
+      addSupplier().then(response=>{
 
+      })
     }
   },
   beforeCreate() {

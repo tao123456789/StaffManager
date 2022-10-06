@@ -6,6 +6,12 @@ export function getMenu(){
 export function getAllMaterial(){
   return http.get('/api/material/getAllMaterial')
 }
+export function getAllMaterialByID(id){
+  return http.get('/api/material/getAllMaterial/'+id)
+}
+export function addDeliveryDetailMaterial(params){
+  return http.post('/api/delivery/addDeliveryDetailMaterial',params)
+}
 export function addMaterial(params){
   return http.post('/api/material/addMaterial',params)
 }
@@ -23,4 +29,10 @@ export function getAllDeliveryDetail(){
 }
 export function getAllSupplier(){
   return http.get('/api/supplier/getAllSupplier')
+}
+export function addSupplier(params){
+  return http.post('/api/supplier/saveSupplier',params)
+}
+export function delDeliveryDetailNO(id){
+  return http.get('/api/delivery/delDeliveryDetailNO/'+id)
 }
